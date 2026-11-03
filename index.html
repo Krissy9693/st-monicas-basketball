@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>St. Monica's Basketball</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: a gym-floor home screen with three big buttons; each button opens its own page with a sticky back bar. */
+:root {
+  --bg: #f3f5f9;
+  --surface: #ffffff;
+  --ink: #141a2e;
+  --muted: #56607a;
+  --line: #dde2ec;
+  --navy: #1b2a6b;
+  --navy-ink: #ffffff;
+  --orange: #e2611b;
+  --orange-soft: #fdeee4;
+  --stop: #b3261e;
+  --stop-soft: #fbe9e7;
+  --go: #1f8a50;
+  --court: #f1e6d2;
+  --court-out: #e6d6b9;
+  --court-line: #9c7c4c;
+  --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1220; --surface: #171d31; --ink: #eef1f8; --muted: #a3abc2; --line: #2a3350;
+    --navy: #2b3f94; --navy-ink: #ffffff; --orange: #f07a36; --orange-soft: #3a2416;
+    --stop: #f2867d; --stop-soft: #3a1c1a; --go: #4cc283; --court: #272218; --court-out: #1e1a12; --court-line: #8a7550; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1220; --surface: #171d31; --ink: #eef1f8; --muted: #a3abc2; --line: #2a3350;
+  --navy: #2b3f94; --navy-ink: #ffffff; --orange: #f07a36; --orange-soft: #3a2416;
+  --stop: #f2867d; --stop-soft: #3a1c1a; --go: #4cc283; --court: #272218; --court-out: #1e1a12; --court-line: #8a7550; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.55;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.05; }
+p { margin: 0; }
+a { color: var(--orange); }
+button { font: inherit; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+
+.wrap {
+  max-width: 760px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- Home ---------- */
+.hero {
+  background: var(--navy); color: var(--navy-ink);
+  position: relative; overflow: hidden;
+}
+.hero .wrap { padding-block: 56px 48px; position: relative; z-index: 1; }
+.hero svg.court { position: absolute; right: -60px; top: -40px; width: 420px; max-width: 90%; opacity: .16; z-index: 0; }
+.eyebrow {
+  font-weight: 700; font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+}
+.hero .eyebrow { color: #ffb489; }
+.hero h1 { font-size: clamp(48px, 13vw, 88px); font-weight: 900; text-transform: uppercase; margin-top: 8px; }
+.hero p.sub { margin-top: 12px; font-size: 18px; max-width: 34ch; opacity: .9; }
+
+.menu { display: grid; gap: 14px; padding-block: 28px 48px; }
+.menu-btn {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px;
+  width: 100%; text-align: left; cursor: pointer;
+  background: var(--surface); color: var(--ink);
+  border: 2px solid var(--line); border-radius: 14px;
+  padding: 22px 22px;
+  transition: border-color .15s, transform .15s;
+}
+.menu-btn:hover { border-color: var(--orange); transform: translateY(-1px); }
+.menu-btn .label { font-family: var(--font-display); font-weight: 800; font-size: 32px; text-transform: uppercase; line-height: 1; }
+.menu-btn .desc { color: var(--muted); font-size: 15px; margin-top: 6px; }
+.menu-btn .arrow { font-family: var(--font-display); font-size: 34px; color: var(--orange); font-weight: 800; }
+.menu-btn.primary { background: var(--orange); border-color: var(--orange); color: #fff; }
+.menu-btn.primary .desc { color: rgba(255,255,255,.88); }
+.menu-btn.primary .arrow { color: #fff; }
+.soon { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; margin-left: 8px; vertical-align: middle; font-family: var(--font-body); }
+
+/* ---------- Sub pages ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--navy); }
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--navy); color: var(--navy-ink);
+}
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px; }
+.back {
+  background: transparent; color: inherit; border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: 999px; padding: 6px 14px; cursor: pointer; font-weight: 600; font-size: 15px;
+}
+.back:hover { border-color: #fff; }
+.topbar .name { font-family: var(--font-display); font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: .02em; }
+
+.page-head { padding-block: 32px 8px; }
+.page-head h1 { font-size: clamp(40px, 10vw, 64px); font-weight: 900; text-transform: uppercase; margin-top: 6px; }
+.page-head .eyebrow { color: var(--orange); }
+.page-head p { margin-top: 12px; color: var(--muted); font-size: 18px; }
+
+.jump { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 16px 8px; }
+.jump a {
+  text-decoration: none; color: var(--ink); background: var(--surface);
+  border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 15px;
+}
+.jump a:hover { border-color: var(--orange); }
+
+section.block { padding-block: 36px 8px; scroll-margin-top: 70px; }
+section.block > h2 { font-size: 38px; font-weight: 800; text-transform: uppercase; }
+section.block > .lead { margin-top: 8px; color: var(--muted); }
+.part-tag { display: inline-block; background: var(--navy); color: var(--navy-ink); font-weight: 700; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; margin-bottom: 10px; }
+
+.letter { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; display: grid; gap: 14px; margin-top: 18px; }
+.letter .sign { font-weight: 600; }
+
+/* Big numbers strip */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 18px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; min-width: 0; }
+.fact .num { font-family: var(--font-display); font-weight: 900; font-size: 44px; line-height: 1; color: var(--orange); font-variant-numeric: tabular-nums; }
+.fact .what { margin-top: 6px; font-size: 15px; color: var(--muted); }
+
+/* Rule lists */
+.rules { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 12px; }
+.rule { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
+.rule .n { font-family: var(--font-display); font-weight: 900; font-size: 28px; line-height: 1; color: var(--orange); font-variant-numeric: tabular-nums; }
+.rule h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; line-height: 1.3; }
+.rule p { color: var(--muted); margin-top: 4px; }
+.rule div { min-width: 0; }
+
+/* Fouls table */
+.foul-list { margin-top: 18px; display: grid; gap: 10px; }
+.foul { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--stop); border-radius: 10px; padding: 14px 16px; }
+.foul .what { font-weight: 600; }
+.foul .result { background: var(--stop-soft); color: var(--stop); font-weight: 700; font-size: 14px; padding: 4px 10px; border-radius: 999px; text-align: center; }
+@media (max-width: 520px) { .foul { grid-template-columns: 1fr; } .foul .result { justify-self: start; } }
+
+.callout { margin-top: 18px; background: var(--orange-soft); border-radius: 12px; padding: 18px 20px; }
+.callout strong { color: var(--orange); }
+
+.checks { margin-top: 12px; display: grid; gap: 8px; padding-left: 0; list-style: none; }
+.checks li { position: relative; padding-left: 26px; }
+.checks li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 10px; height: 10px; border-radius: 50%; background: var(--orange); }
+.checks.no li::before { background: var(--stop); border-radius: 2px; }
+.checks li.go::before { background: var(--go); }
+.checks li.go b { color: var(--go); letter-spacing: .06em; }
+.student-first { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-weight: 600; }
+details.tip { margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+details.tip summary { cursor: pointer; padding: 10px 14px; font-weight: 700; color: var(--orange); list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+details.tip summary::-webkit-details-marker { display: none; }
+details.tip summary::after { content: "+"; font-size: 20px; line-height: 1; }
+details.tip[open] summary::after { content: "–"; }
+.sandwich { list-style: none; margin: 0; padding: 0 14px 14px; display: grid; gap: 8px; }
+.sandwich li { border-radius: 8px; padding: 10px 12px; color: var(--ink); }
+.sandwich li b { display: block; }
+.sandwich .bread { background: rgba(31,138,80,.12); }
+.sandwich .bread b { color: var(--go); }
+.sandwich .filling { background: var(--orange-soft); }
+.sandwich .filling b { color: var(--orange); }
+.schedule { margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.slot { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.slot .time { font-family: var(--font-display); font-weight: 900; font-size: 36px; line-height: 1; font-variant-numeric: tabular-nums; }
+.slot .team { margin-top: 4px; font-weight: 600; color: var(--muted); }
+.rosters { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .rosters { grid-template-columns: 1fr; } }
+.roster h3 { font-family: var(--font-display); font-size: 26px; font-weight: 800; text-transform: uppercase; }
+.roster p { margin-top: 8px; color: var(--muted); font-style: italic; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+@media (max-width: 600px) { .two { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; min-width: 0; }
+.card h3 { font-family: var(--font-body); font-size: 17px; font-weight: 700; }
+
+/* Scorecard */
+.scale { margin-top: 18px; display: grid; gap: 8px; }
+.scale-row { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.scale-row .score { font-family: var(--font-display); font-weight: 900; font-size: 36px; line-height: 1; text-align: center; border-radius: 8px; padding: 6px 0; color: #fff; font-variant-numeric: tabular-nums; }
+.scale-row p { font-size: 16px; min-width: 0; }
+.s5 { background: #1f7a4a; } .s4 { background: #3d8f5e; } .s3 { background: #8a7a1f; } .s2 { background: #c0661c; } .s1 { background: #b3261e; }
+
+.areas { margin-top: 18px; display: grid; gap: 10px; }
+details.area { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+details.area summary { cursor: pointer; padding: 16px 18px; font-weight: 700; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+details.area summary::-webkit-details-marker { display: none; }
+details.area summary::after { content: "+"; font-family: var(--font-display); font-size: 28px; color: var(--orange); line-height: 1; }
+details.area[open] summary::after { content: "–"; }
+.area-body { padding: 0 18px 18px; display: grid; gap: 12px; }
+.area-body .looks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 560px) { .area-body .looks { grid-template-columns: 1fr; } }
+.look { border-radius: 8px; padding: 10px 12px; font-size: 15px; }
+.look b { display: block; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 2px; }
+.look.hi { background: rgba(31,122,74,.12); } .look.hi b { color: #2f9a62; }
+.look.lo { background: var(--stop-soft); } .look.lo b { color: var(--stop); }
+.area-body ol { margin: 0; padding-left: 20px; color: var(--muted); }
+
+.contact { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+.email { font-weight: 700; font-size: 18px; user-select: all; overflow-wrap: anywhere; }
+.copy { background: var(--navy); color: var(--navy-ink); border: 0; border-radius: 999px; padding: 6px 16px; font-weight: 600; cursor: pointer; }
+.copy-msg { font-size: 14px; color: var(--muted); }
+
+.empty { padding-block: 40px 60px; }
+.empty .card { text-align: left; }
+
+footer { padding-block: 40px 56px; color: var(--muted); font-size: 14px; }
+
+/* ---------- Home: Dragons welcome ---------- */
+.dragons { background: var(--surface); border: 2px solid var(--orange); border-radius: 14px; padding: 22px; display: grid; gap: 10px; margin-bottom: 48px; }
+.dragons h2 { font-size: 34px; font-weight: 900; text-transform: uppercase; }
+.dragons .chant { font-family: var(--font-display); font-weight: 900; font-size: 26px; text-transform: uppercase; color: var(--orange); line-height: 1.1; }
+
+/* ---------- Playbook pages ---------- */
+.play > * + * { margin-top: 14px; }
+.play > h3.sub-h { margin-top: 36px; font-size: 28px; font-weight: 800; text-transform: uppercase; }
+.play > h4.label-h, h4.label-h { margin-top: 24px; margin-bottom: 0; font-size: 17px; font-weight: 700; }
+.muted { color: var(--muted); }
+.card h3 + * { margin-top: 8px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+.steps li::marker { font-weight: 800; color: var(--orange); }
+.yt { font-size: 15px; color: var(--muted); }
+.yt a { display: inline-block; margin: 4px 6px 0 0; padding: 3px 12px; border: 1.5px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--ink); font-weight: 600; background: var(--surface); }
+.yt a:hover { border-color: var(--orange); }
+.words { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.words span { font-family: var(--font-display); font-weight: 900; font-size: 22px; background: var(--orange); color: #fff; padding: 2px 12px; border-radius: 6px; letter-spacing: .03em; }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.tbl table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.tbl th, .tbl td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl th { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl td:first-child { font-weight: 700; }
+.glossary { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0; }
+.glossary div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.glossary dt { font-weight: 700; }
+.glossary dd { margin: 2px 0 0; color: var(--muted); }
+.legend { display: grid; gap: 8px; }
+.legend-row { display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; }
+.legend-row svg { display: block; width: 110px; height: 36px; }
+.legend-row p { min-width: 0; }
+.quiz { display: grid; gap: 8px; }
+details.q { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+details.q summary { cursor: pointer; padding: 13px 16px; font-weight: 600; }
+details.q .ans { padding: 0 16px 14px; color: var(--go); font-weight: 700; }
+.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.checklist label { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; cursor: pointer; }
+.checklist input { width: 20px; height: 20px; accent-color: var(--orange); flex: none; }
+
+/* Court diagrams */
+.diagram { margin-left: 0; margin-right: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; max-width: 520px; }
+.diagram.full { max-width: 340px; }
+.diagram svg { display: block; width: 100%; height: auto; }
+.diagram figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; text-align: center; }
+.court-out { fill: var(--court-out); }
+.court-bg { fill: var(--court); }
+.c-line { fill: none; stroke: var(--court-line); stroke-width: 3; }
+.c-line.dash { stroke-dasharray: 8 8; }
+.c-fill { fill: var(--court-line); }
+.mv { fill: none; stroke: var(--ink); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.mv.pass { stroke-dasharray: 10 8; }
+.mv.bar { stroke-width: 8; stroke-linecap: butt; }
+.ah { fill: var(--ink); }
+.pl { fill: var(--navy); stroke: var(--surface); stroke-width: 3; }
+.pl-t { fill: #fff; font-family: var(--font-display); font-weight: 800; font-size: 24px; text-anchor: middle; dominant-baseline: central; }
+.ball { fill: var(--orange); stroke: var(--surface); stroke-width: 2; }
+.spot { fill: var(--orange-soft); stroke: var(--orange); stroke-width: 3; }
+.spot-t { fill: var(--orange); font-family: var(--font-body); font-weight: 800; font-size: 15px; text-anchor: middle; dominant-baseline: central; }
+.opp { stroke: var(--stop); stroke-width: 5; stroke-linecap: round; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<!-- ================= HOME ================= -->
+<main id="view-home">
+  <header class="hero">
+    <svg class="court" viewBox="0 0 400 400" aria-hidden="true" fill="none" stroke="#ffffff" stroke-width="6">
+      <rect x="10" y="10" width="380" height="380"/>
+      <rect x="130" y="10" width="140" height="190"/>
+      <circle cx="200" cy="200" r="60"/>
+      <path d="M40 10 V110 A160 160 0 0 0 360 110 V10"/>
+      <circle cx="200" cy="50" r="12"/>
+    </svg>
+    <div class="wrap">
+      <div class="eyebrow">Saint Monica's · Middle School · 2026–27</div>
+      <h1>St. Monica's Basketball</h1>
+      <p class="sub">Everything players and parents need for the season, in one place.</p>
+    </div>
+  </header>
+  <div class="wrap">
+    <nav class="menu" aria-label="Sections">
+      <button class="menu-btn primary" data-go="parents">
+        <span><span class="label">Parent Announcements</span><div class="desc">Parent Night: conduct, game day, playing time and the tryout scorecard</div></span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </button>
+      <button class="menu-btn" data-go="offense">
+        <span><span class="label">Offensive Plays</span><div class="desc">Dragon offense, inbound plays, fast break and press break</div></span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </button>
+      <button class="menu-btn" data-go="defense">
+        <span><span class="label">Defense</span><div class="desc">Man-to-man, 3-2 zone, 1-3-1 zone and the 2-2-1 press</div></span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </button>
+    </nav>
+    <section class="dragons">
+      <h2>Welcome, Dragons! 🐉🔥</h2>
+      <p><b>This is OUR book.</b> Every play in here is a weapon, and every Dragon gets to use it.</p>
+      <p>Dragons don't quit. Dragons hustle on every play. Dragons pick each other up. We play loud on defense, we share the ball on offense, and we never stop running.</p>
+      <p>This year we play <b>team basketball</b>. Everybody passes. Everybody moves. <b>Everybody scores.</b></p>
+      <p>Other teams will be bigger. Some will be faster. <b>Nobody will out-work us.</b></p>
+      <p>Learn this book. Know your job. Trust your teammates. Then go out there and breathe fire.</p>
+      <p class="chant">Dragons on three! 1… 2… 3… DRAGONS!</p>
+    </section>
+  </div>
+</main>
+
+<!-- ================= PARENT NIGHT ================= -->
+<main id="view-parents" hidden>
+  <div class="topbar"><div class="wrap">
+    <button class="back" data-go="home">← Home</button>
+    <span class="name">Parent Night</span>
+  </div></div>
+
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">Parent Announcements</div>
+      <h1>Parent Night</h1>
+      <p>How we'll run the season, what I expect from players, and how parents can help.</p>
+    </div>
+
+    <nav class="jump" aria-label="On this page">
+      <a href="#welcome">Welcome</a>
+      <a href="#students">Players</a>
+      <a href="#fouls">Fouls</a>
+      <a href="#parents">Parents</a>
+      <a href="#gameday">Game Day</a>
+      <a href="#playing-time">Playing Time</a>
+      <a href="#scorecard">Scorecard</a>
+      <a href="#contact">Contact</a>
+      <a href="#rosters">Team Rosters</a>
+    </nav>
+
+    <!-- Welcome -->
+    <section class="block" id="welcome">
+      <h2>Welcome Back</h2>
+      <div class="letter">
+        <p>Welcome, parents and guardians. This is my second year coaching at Saint Monica's, and I'm so glad to be back with your kids.</p>
+        <p>I've been coaching since 2017. I started at Saint Gregory's, first as an assistant and then as head coach, where we finished district runner-up three years in a row. I've also done one-on-one player development and coached both my son's and my daughter's CYO teams.</p>
+        <p>This is middle school basketball. This is where we build a foundation. It is not Game 7 of the WNBA Finals. It's not that serious, but we love our kids, and I want every one of them to do well.</p>
+        <p class="sign">Coach Kristen Lopez</p>
+      </div>
+
+      <div class="facts">
+        <div class="fact"><div class="num">33</div><div class="what">players made the program this year</div></div>
+        <div class="fact"><div class="num">4</div><div class="what">smaller teams, so everyone plays, and plays a lot</div></div>
+      </div>
+
+      <div class="callout">
+        <p><strong>Tell us now if your child will miss a game.</strong> We could have made two or three large teams. We chose four smaller ones so every player gets real minutes. That only works if we know who's coming. If you already know about a date your child will be out, please tell me or the admin as soon as you know.</p>
+      </div>
+    </section>
+
+    <!-- Students -->
+    <section class="block" id="students">
+      <span class="part-tag">Part 1 · Players</span>
+      <h2>Player Conduct</h2>
+      <p class="lead">When you put on this uniform, you represent your school, your teammates and yourself.</p>
+
+      <ol class="rules">
+        <li class="rule"><span class="n">1</span><div><h3>Show Up And Work Hard</h3><p>Be at every practice and game, ready to learn and hustle. Players who work hard in practice, not only when we scrimmage, will play more.</p></div></li>
+        <li class="rule"><span class="n">2</span><div><h3>Play As A Team</h3><p>Basketball is about how we move, talk and trust each other. Selfish play or showboating won't earn minutes.</p></div></li>
+        <li class="rule"><span class="n">3</span><div><h3>Be Coachable</h3><p>Listen. Learn. Respond. The goal is improvement, not perfection.</p></div></li>
+        <li class="rule"><span class="n">4</span><div><h3>Take Care Of Your Grades</h3><p>Academics come first. Poor grades will affect playing time.</p></div></li>
+        <li class="rule"><span class="n">5</span><div><h3>Respect Everyone</h3><p>Teammates, coaches, referees and opponents. We win and lose with class.</p></div></li>
+        <li class="rule"><span class="n">6</span><div><h3>Stay On The Bench The Whole Game</h3><p>Players stay with the team for the entire game. That includes halftime: no getting up to visit family in the stands.</p></div></li>
+      </ol>
+
+      <div class="two">
+        <div class="card">
+          <h3>Missing Practice</h3>
+          <p style="margin-top:6px;color:var(--muted)">We pick starters the week of each game. Players who show up and work hard will play more.</p>
+          <ul class="checks"><li class="go">Tutoring: <b>ENCOURAGED</b></li><li>Doctor appointments: okay</li><li>Illness: okay</li></ul>
+          <ul class="checks no"><li>Skipping practice just to skip it: not okay</li></ul>
+          <p class="student-first">You are all student-athletes. Student comes first.</p>
+        </div>
+        <div class="card">
+          <h3>Practice Rules</h3>
+          <ul class="checks">
+            <li>We practice how we'll play.</li>
+            <li>When the coach is talking, no dribbling and no talking.</li>
+            <li>No walking in drills. Move with purpose.</li>
+            <li>No talking back to coaches or players.</li>
+            <li>No teasing or putting down teammates.</li>
+            <li>Coaching comes from the coach, not other players.</li>
+            <li>Please, no screaming during practice.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fouls -->
+    <section class="block" id="fouls">
+      <h2>Fouls And Discipline</h2>
+      <p class="lead">We play clean basketball. These apply to every player on every team.</p>
+      <div class="foul-list">
+        <div class="foul"><span class="what">A flagrant or technical foul</span><span class="result">2-game suspension</span></div>
+        <div class="foul"><span class="what">More than 2 flagrant or technical fouls in one season</span><span class="result">Removed from team</span></div>
+        <div class="foul"><span class="what">Fighting during a game</span><span class="result">Removed from team</span></div>
+        <div class="foul"><span class="what">Talking back to or yelling at a coach, official or the other team during a game</span><span class="result">Suspension, at coach and administration's discretion</span></div>
+      </div>
+    </section>
+
+    <!-- Parents -->
+    <section class="block" id="parents">
+      <span class="part-tag">Part 2 · Parents</span>
+      <h2>Parent Conduct</h2>
+      <p class="lead">I'm asking for your partnership. Our players watch how we act.</p>
+
+      <ol class="rules">
+        <li class="rule"><span class="n">1</span><div><h3>Present A United Front</h3><p>Players should hear the same message from you and from me about effort, attitude and their role on the team.</p></div></li>
+        <li class="rule"><span class="n">2</span><div><h3>Set The Example In The Stands</h3><p>Stay positive and respect referees and every player, ours and theirs.</p></div></li>
+        <li class="rule"><span class="n">3</span><div><h3>Coaching Comes From The Bench During Games</h3><p>If you have coaching tips for your child, please give them before or after the game, not during.</p>
+          <details class="tip"><summary>The Sandwich Method Of Feedback</summary>
+            <ol class="sandwich">
+              <li class="bread"><b>1. Start With A Positive</b>Name something they did well.</li>
+              <li class="filling"><b>2. One Thing To Improve</b>Pick one thing they can work on next time.</li>
+              <li class="bread"><b>3. Finish With A Positive</b>End on something good, so the feedback is sandwiched.</li>
+            </ol>
+          </details></div></li>
+        <li class="rule"><span class="n">4</span><div><h3>Wait 24 Hours After A Game</h3><p>I'm happy to hear your ideas about plays or how a game went. Email me 24 hours or more after the game.</p></div></li>
+        <li class="rule"><span class="n">5</span><div><h3>Practices Are Closed</h3><p>Players get a space to work, make mistakes, be corrected and grow without pressure from the bleachers. You'll see the results on game day.</p></div></li>
+        <li class="rule"><span class="n">6</span><div><h3>Let Me Or The Admin Know About A Missed Game</h3><p>Tell me or the admin as soon as you know. With four teams, every absence changes a lineup.</p></div></li>
+      </ol>
+    </section>
+
+    <!-- Game day -->
+    <section class="block" id="gameday">
+      <h2>Game Day</h2>
+      <div class="schedule">
+        <div class="slot"><div class="time">4:30</div><div class="team">B Team Girls</div></div>
+        <div class="slot"><div class="time">5:30</div><div class="team">B Team Boys</div></div>
+        <div class="slot"><div class="time">6:30</div><div class="team">A Team Girls</div></div>
+        <div class="slot"><div class="time">7:30</div><div class="team">A Team Boys</div></div>
+      </div>
+      <div class="callout"><p><strong>Please bring snacks or feed your child before the game.</strong> Some games run late, and that's a long time for them to go without food.</p></div>
+      <div class="facts">
+        <div class="fact"><div class="num">30 min</div><div class="what">Arrive at least 30 minutes before tip-off</div></div>
+        <div class="fact"><div class="num">$5</div><div class="what">Admission to games</div></div>
+      </div>
+      <div class="callout">
+        <p><strong>Arriving late changes the lineup.</strong> If your child was going to start and gets there 5 minutes before the game, I can't start them.</p>
+      </div>
+      <div class="two">
+        <div class="card">
+          <h3>New Uniforms This Year</h3>
+          <ul class="checks">
+            <li>Black shirt underneath (long or short sleeve, your choice)</li>
+            <li>Black socks</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>One Small Favor 🧼</h3>
+          <p style="margin-top:6px;color:var(--muted)">Please have your kids wear deodorant to practices and games. It helps me so much.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Playing time -->
+    <section class="block" id="playing-time">
+      <h2>Playing Time</h2>
+      <p class="lead">Playing time is earned, not given. It's based on:</p>
+      <ol class="rules">
+        <li class="rule"><span class="n">1</span><div><h3>Attendance And Effort In Practice</h3></div></li>
+        <li class="rule"><span class="n">2</span><div><h3>Attitude And Teamwork</h3></div></li>
+        <li class="rule"><span class="n">3</span><div><h3>Knowing The Plays And Defensive Jobs</h3></div></li>
+        <li class="rule"><span class="n">4</span><div><h3>Grades</h3></div></li>
+      </ol>
+      <div class="callout"><p>A player can be the best shooter or dribbler on the floor, but if they don't play team basketball or can't run the plays, they'll sit.</p></div>
+    </section>
+
+    <!-- Scorecard -->
+    <section class="block" id="scorecard">
+      <h2>Tryout Scorecard</h2>
+      <p class="lead">For parents with questions about tryouts. Players were rated 1 to 5 in seven areas, and scores were averaged across conditioning.</p>
+
+      <div class="scale">
+        <div class="scale-row"><span class="score s5">5</span><p><b>Very high level right now.</b> Does it naturally, under pressure and at speed. A starter-level skill for middle school.</p></div>
+        <div class="scale-row"><span class="score s4">4</span><p><b>Strong and reliable.</b> Small things to clean up, but we can trust it in real games most of the time.</p></div>
+        <div class="scale-row"><span class="score s3">3</span><p><b>Average.</b> Can do it in drills, but not consistent yet, especially when tired or guarded. Improves with reps.</p></div>
+        <div class="scale-row"><span class="score s2">2</span><p><b>Struggles.</b> Not reliable in live play yet. Will limit minutes if it doesn't improve.</p></div>
+        <div class="scale-row"><span class="score s1">1</span><p><b>Not game ready yet.</b> Can't do the skill correctly yet, or shuts down in that situation. Must improve to earn real minutes.</p></div>
+      </div>
+
+      <div class="areas" id="areas"></div>
+    </section>
+
+    <!-- Contact -->
+    <section class="block" id="contact">
+      <h2>Reach Me</h2>
+      <p class="lead">Thank you for sharing your child with this program. I'm looking forward to a great season.</p>
+      <div class="contact">
+        <span class="email" id="email">aklopez@saintmonica.net</span>
+        <button class="copy" id="copy-email">Copy email</button>
+        <span class="copy-msg" id="copy-msg" aria-live="polite"></span>
+      </div>
+      <p style="margin-top:14px" class="sign">Committed to your success,<br>Coach Kristen Lopez</p>
+    </section>
+
+    <!-- Rosters -->
+    <section class="block" id="rosters">
+      <h2>Team Rosters</h2>
+      <div class="rosters">
+        <div class="card roster"><h3>B Team Girls</h3><p>Names coming soon</p></div>
+        <div class="card roster"><h3>B Team Boys</h3><p>Names coming soon</p></div>
+        <div class="card roster"><h3>A Team Girls</h3><p>Names coming soon</p></div>
+        <div class="card roster"><h3>A Team Boys</h3><p>Names coming soon</p></div>
+      </div>
+    </section>
+
+    <footer>St. Monica's Basketball · Parent Night</footer>
+  </div>
+</main>
+
+<!-- ================= OFFENSE ================= -->
+<main id="view-offense" hidden>
+  <div class="topbar"><div class="wrap"><button class="back" data-go="home">← Home</button><span class="name">Offense</span></div></div>
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">Dragons Playbook</div>
+      <h1>Offensive Plays</h1>
+      <p>Our offense, the skills that make it work, inbound plays, the fast break and the press break. Learn one part each week.</p>
+    </div>
+    <nav class="jump" aria-label="On this page">
+      <a href="#o-start">Start Here</a>
+      <a href="#o-motion">Dragon Offense</a>
+      <a href="#o-skills">Skills</a>
+      <a href="#o-read">Read And React</a>
+      <a href="#o-inbounds">Inbounds</a>
+      <a href="#o-break">Fast Break</a>
+      <a href="#o-pressbreak">Press Break</a>
+      <a href="#o-quiz">Quiz</a>
+    </nav>
+
+    <section class="block play" id="o-start">
+      <h2>Start Here</h2>
+      <p>Don't try to learn it all at once. Learn one part each week at practice. Look at the pictures, walk through it with your team, then answer the questions at the end.</p>
+      <h4 class="label-h">Reading The Pictures</h4>
+      <div class="legend">
+        <div class="legend-row"><span data-legend="player"></span><p>A <b>circle with a number</b> is a Dragon player. An orange dot means they have the ball.</p></div>
+        <div class="legend-row"><span data-legend="cut"></span><p>A <b>solid arrow</b> means that player runs (cuts).</p></div>
+        <div class="legend-row"><span data-legend="pass"></span><p>A <b>dashed arrow</b> means a pass.</p></div>
+        <div class="legend-row"><span data-legend="dribble"></span><p>A <b>zigzag arrow</b> means dribble.</p></div>
+        <div class="legend-row"><span data-legend="screen"></span><p>A <b>thick bar</b> means a screen (stand still and block a defender).</p></div>
+      </div>
+      <h4 class="label-h">Your Number</h4>
+      <div class="tbl"><table>
+        <thead><tr><th>#</th><th>Position</th><th>Your main job</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Point guard</td><td>Bring the ball up and start the offense</td></tr>
+          <tr><td>2</td><td>Shooting guard</td><td>Shoot from outside</td></tr>
+          <tr><td>3</td><td>Small forward</td><td>Cut, drive, and pass the ball in</td></tr>
+          <tr><td>4</td><td>Power forward</td><td>Set screens and rebound</td></tr>
+          <tr><td>5</td><td>Center</td><td>Play close to the basket and rebound</td></tr>
+        </tbody>
+      </table></div>
+      <p><b>On offense, any Dragon can play any spot.</b> Your number tells you your job on defense, inbounds and the fast break. It doesn't lock you into one spot on offense.</p>
+      <h4 class="label-h">Basketball Words To Know</h4>
+      <dl class="glossary">
+        <div><dt>Top of the key</dt><dd>Out front, right in the middle, at the 3-point line.</dd></div>
+        <div><dt>Wing</dt><dd>The side of the court at the 3-point line.</dd></div>
+        <div><dt>Corner</dt><dd>The 3-point line down by the baseline.</dd></div>
+        <div><dt>Block</dt><dd>The little box on the side of the lane, close to the basket.</dd></div>
+        <div><dt>Elbow</dt><dd>Where the free-throw line meets the lane.</dd></div>
+        <div><dt>Baseline</dt><dd>The end line under the basket.</dd></div>
+        <div><dt>Screen</dt><dd>Standing still so your teammate's defender bumps into you.</dd></div>
+        <div><dt>Cut</dt><dd>Running hard to a new spot to get open.</dd></div>
+      </dl>
+    </section>
+
+    <section class="block play" id="o-motion">
+      <h2>Dragon Offense: Find The Open Spot</h2>
+      <p><b>The idea:</b> we don't run set plays. We play <b>team basketball</b>. Every Dragon learns the spots on the court, finds the open one, and moves to it. We pass, cut and screen until a teammate is wide open. Then we score. It works against man-to-man and against a zone.</p>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=4+out+1+in+motion+offense" target="_blank" rel="noopener">4 out 1 in motion offense</a><a href="https://www.youtube.com/results?search_query=read+and+react+offense+youth+basketball" target="_blank" rel="noopener">read and react offense youth basketball</a></p>
+      <h4 class="label-h">What Dragons Believe On Offense</h4>
+      <div class="grid3">
+        <div class="card"><h3>Everyone Scores</h3><p class="muted">A basket counts the same no matter who makes it. All five Dragons should be ready to score on every trip down the floor.</p></div>
+        <div class="card"><h3>We Must Pass The Ball</h3><p class="muted">The ball moves faster than any defender can run. Our best shots come after the ball moves, not after one player dribbles.</p></div>
+        <div class="card"><h3>Off The Ball Matters Most</h3><p class="muted">One Dragon has the ball. Four don't. Those four make the offense work by cutting, screening and moving to open spots.</p></div>
+      </div>
+
+      <h3 class="sub-h">The 9 Spots</h3>
+      <figure class="diagram" data-d="spots9"><figcaption>The 9 Dragon spots</figcaption></figure>
+      <div class="tbl"><table>
+        <thead><tr><th>Spot</th><th>Where it is</th><th>How many</th></tr></thead>
+        <tbody>
+          <tr><td>Top spots (T)</td><td>Outside the 3-point line, just left and right of the middle</td><td>2</td></tr>
+          <tr><td>Wing spots (W)</td><td>Outside the 3-point line on each side, even with the free-throw line</td><td>2</td></tr>
+          <tr><td>Free-throw line (FT)</td><td>The middle of the free-throw line</td><td>1</td></tr>
+          <tr><td>Elbows (E)</td><td>Where the free-throw line meets the lane, on each side</td><td>2</td></tr>
+          <tr><td>Blocks (B)</td><td>The little boxes next to the basket, on each side</td><td>2</td></tr>
+        </tbody>
+      </table></div>
+      <p><b>Our starting shape:</b> four Dragons fill the 4 outside spots. One Dragon starts inside, on a block or an elbow. Coaches call this <b>4 out, 1 in</b>. From there, everyone moves.</p>
+      <h4 class="label-h">How To Find The Open Spot</h4>
+      <ul class="checks">
+        <li><b>One Dragon per spot.</b> If a teammate is already in the spot you want, go to a different open one.</li>
+        <li><b>Fill the empty spot.</b> When a teammate cuts away, the closest Dragon slides into the spot they left.</li>
+        <li><b>Spread out.</b> Stay about 4 big steps (12 to 15 feet) from each other. If you can high-five a teammate, you're too close.</li>
+        <li><b>Get out of the lane.</b> Never stand in the lane more than 3 seconds. Cut through it, then get out to a spot.</li>
+        <li><b>Never stand still.</b> Count "1, 2" in your head. If you haven't gotten the ball, move.</li>
+        <li><b>Give the driver room.</b> When a teammate dribbles toward you, slide away. On a wing, slide down to the corner.</li>
+      </ul>
+    </section>
+
+    <section class="block play" id="o-skills">
+      <h2>The Four Skills</h2>
+
+      <h3 class="sub-h">Skill 1: Passing</h3>
+      <p>Passing is our most important skill. <b>A great pass is just as good as a basket.</b></p>
+      <div class="tbl"><table>
+        <thead><tr><th>Pass</th><th>Best for</th><th>How</th></tr></thead>
+        <tbody>
+          <tr><td>Chest pass</td><td>Quick, open passes</td><td>Two hands, step toward your teammate, thumbs point down at the end.</td></tr>
+          <tr><td>Bounce pass</td><td>Getting past a tall defender, hitting a cutter</td><td>Bounce it about two-thirds of the way to your teammate.</td></tr>
+          <tr><td>Overhead pass</td><td>Passing over a defender, skip passes</td><td>Two hands over your head, snap it forward.</td></tr>
+          <tr><td>Pass fake</td><td>Moving the defender first</td><td>Fake one way, then pass the other way.</td></tr>
+        </tbody>
+      </table></div>
+      <h4 class="label-h">Passing Rules</h4>
+      <ul class="checks">
+        <li>When you catch it, <b>face the basket</b> and look. That's <b>triple threat</b>: you can shoot, pass or drive.</li>
+        <li>Pass to your teammate's <b>outside hand</b>, away from their defender.</li>
+        <li>Don't hold it. Look, then pass within 2 seconds.</li>
+        <li><b>Two-dribble rule:</b> no more than 2 dribbles, unless you are driving to the basket or bringing the ball up the court.</li>
+        <li><b>Everybody touches it.</b> Look for the teammate who hasn't had the ball yet.</li>
+      </ul>
+
+      <h3 class="sub-h">Skill 2: Cutting</h3>
+      <p>A cut is a hard, fast run to get open. Walking is not cutting!</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Cut</th><th>When to use it</th><th>How</th></tr></thead>
+        <tbody>
+          <tr><td>Basket cut (give-and-go)</td><td>Right after you pass</td><td>Pass, then sprint to the basket with a hand up.</td></tr>
+          <tr><td>V-cut</td><td>Your defender is right next to you</td><td>Walk your defender toward the basket, then sprint back out to a spot. Your path makes a V.</td></tr>
+          <tr><td>Backdoor cut</td><td>Your defender jumps in front to block the pass</td><td>Plant your outside foot and sprint behind them to the basket.</td></tr>
+          <tr><td>Flash cut</td><td>The middle is empty</td><td>Sprint to the free-throw line or an elbow with your hands up.</td></tr>
+          <tr><td>L-cut</td><td>You're on the block and want to get to the wing</td><td>Run up the lane line, then turn out to the wing. Your path makes an L.</td></tr>
+        </tbody>
+      </table></div>
+      <p>No pass after your cut? <b>Get out of the lane and fill an open spot.</b></p>
+      <figure class="diagram" data-d="passcutfill"><figcaption>Pass, cut, fill: 1 passes to 3 and cuts to the basket. 2 and 4 fill the empty spots.</figcaption></figure>
+
+      <h3 class="sub-h">Skill 3: Screening</h3>
+      <p>A screen gets a teammate open, and <b>the screener is often open too.</b></p>
+      <div class="two">
+        <div class="card"><h3>How To Set A Screen</h3>
+          <ol class="steps">
+            <li>Run to your teammate's defender. Stop and stand still before they bump into you. A moving screen is a foul.</li>
+            <li>Feet wide, knees bent, arms crossed over your chest.</li>
+            <li>Call your teammate's name so they know it's coming.</li>
+          </ol>
+        </div>
+        <div class="card"><h3>How To Use A Screen</h3>
+          <ol class="steps">
+            <li>Wait for it! Let your screener get set.</li>
+            <li>Walk your defender away first, then go.</li>
+            <li>Run shoulder to shoulder past the screener so nobody fits between you.</li>
+            <li>Read your defender. They follow you? <b>Curl to the basket.</b> They go under the screen? <b>Pop out for a shot.</b></li>
+          </ol>
+        </div>
+      </div>
+      <p><b>After you screen:</b> turn toward the ball and get open. Roll to the basket or step out to an open spot.</p>
+      <p><b>Three screens we use:</b> <b>screen away</b> (pass one way, screen the other way), <b>down screen</b> (screen for a teammate near the basket so they can come out), and <b>ball screen</b> (screen for the dribbler).</p>
+      <figure class="diagram" data-d="screenaway"><figcaption>Screen away: 1 passes to 3, then screens for 2. 2 comes off the screen toward the ball.</figcaption></figure>
+
+      <h3 class="sub-h">Skill 4: Moving Without The Ball</h3>
+      <p>Four Dragons don't have the ball. Their job is to get someone open.</p>
+      <ul class="checks">
+        <li><b>Pass and move.</b> After every pass, do something: cut to the basket, screen away, or go to a new spot.</li>
+        <li><b>Fill behind.</b> A teammate cut? Fill their spot.</li>
+        <li><b>Be a target.</b> Hands up, eyes on the ball, call for it.</li>
+        <li><b>Drift with the drive.</b> When a teammate drives, slide to an open spot where they can see you.</li>
+        <li><b>Cut to open space,</b> never to where a teammate already is.</li>
+      </ul>
+      <figure class="diagram" data-d="drivedrift"><figcaption>Drive and drift: 1 drives. 3 drifts to the corner and 2 slides to the top, so both are open for a pass.</figcaption></figure>
+    </section>
+
+    <section class="block play" id="o-read">
+      <h2>Read And React</h2>
+      <p>Watch what the defense does, then do the answer.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>When you see…</th><th>Do this</th></tr></thead>
+        <tbody>
+          <tr><td>Your defender turns their head to watch the ball</td><td>Basket cut</td></tr>
+          <tr><td>Your defender jumps in front of you</td><td>Backdoor cut</td></tr>
+          <tr><td>Your defender is far away from you</td><td>Catch and shoot, or drive</td></tr>
+          <tr><td>A teammate drives toward you</td><td>Slide away to an open spot (the corner)</td></tr>
+          <tr><td>Two defenders are on the ball</td><td>Someone is open. Pass to them!</td></tr>
+          <tr><td>The free-throw line is empty</td><td>Flash cut to it</td></tr>
+          <tr><td>A teammate cuts out of a spot</td><td>Fill it</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3 class="sub-h">Against A Zone</h3>
+      <p>Same spots, same rules, with a few changes:</p>
+      <ul class="checks">
+        <li>Stand in the <b>gaps</b> between defenders, not right in front of one.</li>
+        <li>Pass faster to make the zone move. A <b>skip pass</b> (over the top to the far side) finds open shooters.</li>
+        <li><b>Flash</b> to the free-throw line. It's open against most zones.</li>
+        <li>The inside Dragon runs the baseline, block to block, behind the zone.</li>
+        <li>Dribble even less. Against a zone, the pass is everything.</li>
+      </ul>
+
+      <h3 class="sub-h">Dragon Offense Rules</h3>
+      <ul class="checks">
+        <li>Pass the ball. Then pass it again.</li>
+        <li>After you pass, move.</li>
+        <li>Find the open spot. Fill the empty spot.</li>
+        <li>Read your defender, then cut.</li>
+        <li>Screen for a teammate, then get open yourself.</li>
+        <li>Take the open shot you can make.</li>
+        <li>Everybody touches it. Everybody scores.</li>
+      </ul>
+
+      <h3 class="sub-h">Practice Games</h3>
+      <ul class="checks">
+        <li><b>Pass and fill (5 on 0):</b> after every pass, the passer cuts to the basket and everyone fills the empty spots. Ten passes, then a layup.</li>
+        <li><b>Screen away (4 on 4):</b> every pass is followed by a screen away from the ball.</li>
+        <li><b>No-dribble scrimmage (5 on 5):</b> no dribbling allowed. You must pass and cut to score.</li>
+        <li><b>Everybody scores:</b> first team to have all 5 players score wins.</li>
+      </ul>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=pass+and+cut+drill" target="_blank" rel="noopener">pass and cut drill</a><a href="https://www.youtube.com/results?search_query=no+dribble+scrimmage+basketball" target="_blank" rel="noopener">no dribble scrimmage basketball</a></p>
+    </section>
+
+    <section class="block play" id="o-inbounds">
+      <h2>Inbound Plays</h2>
+      <p>These are plays for when we pass the ball in from out of bounds. Two are from under our basket. One is from the sideline. <b>3 always passes it in.</b></p>
+      <p><b>Coach words:</b> a baseline inbound play is called a <b>BLOB</b> (Baseline Out of Bounds). A sideline inbound play is a <b>SLOB</b> (Sideline Out of Bounds). Use these words when you search for videos.</p>
+      <h4 class="label-h">Inbound Rules</h4>
+      <ul class="checks">
+        <li>3 yells the play name, then <b>slaps the ball</b>. Nobody moves until the slap!</li>
+        <li>We only have <b>5 seconds</b> to pass it in. If nobody is open by 4, throw it to the safety.</li>
+        <li>After passing it in, 3 steps onto the court fast.</li>
+      </ul>
+
+      <h3 class="sub-h">Inbound 1: BOX</h3>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=box+BLOB+inbound+play" target="_blank" rel="noopener">box BLOB inbound play</a></p>
+      <figure class="diagram" data-d="box"><figcaption>Box · baseline out of bounds</figcaption></figure>
+      <p><b>Start:</b> stand in a box. 4 on the block closest to the ball. 5 on the other block. 2 on the elbow closest to the ball. 1 on the other elbow.</p>
+      <ol class="steps">
+        <li>On the slap, 4 walks across the lane and screens 5's defender.</li>
+        <li>5 cuts over the screen toward the ball. <b>5 is the first choice, for a layup.</b></li>
+        <li>2 runs out to the corner. <b>2 is the second choice, for a shot.</b></li>
+        <li>1 steps back to the top. <b>1 is the safety.</b></li>
+        <li>After screening, 4 turns toward the ball. The screener is often open too!</li>
+      </ol>
+
+      <h3 class="sub-h">Inbound 2: LINE</h3>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=stack+BLOB+inbound+play" target="_blank" rel="noopener">stack BLOB inbound play</a><a href="https://www.youtube.com/results?search_query=line+inbound+play+basketball" target="_blank" rel="noopener">line inbound play</a></p>
+      <figure class="diagram" data-d="line"><figcaption>Line · baseline out of bounds</figcaption></figure>
+      <p><b>Start:</b> stand in a line next to the lane: 5 in front (closest to the basket), then 4, then 2, then 1.</p>
+      <ol class="steps">
+        <li>On the slap, 5 runs to the basket. <b>First choice.</b></li>
+        <li>4 runs out to the corner. <b>Second choice.</b></li>
+        <li>2 runs across to the other wing.</li>
+        <li>1 steps back to the top. <b>Safety.</b></li>
+      </ol>
+      <p><b>Why it works:</b> four Dragons going four different ways. Somebody is going to be open!</p>
+
+      <h3 class="sub-h">Inbound 3: Sideline Stack</h3>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=stack+SLOB+inbound+play" target="_blank" rel="noopener">stack SLOB inbound play</a></p>
+      <figure class="diagram" data-d="slob"><figcaption>Sideline stack · sideline out of bounds</figcaption></figure>
+      <p><b>Start:</b> 5 and 4 stand one behind the other near the elbow, 5 in front. 2 in the corner. 1 at the top on the far side. 3 passes it in from the sideline.</p>
+      <ol class="steps">
+        <li>On the slap, 4 sprints to the basket. <b>First choice.</b></li>
+        <li>5 steps toward 3 with both hands up. <b>Second choice, the easy pass.</b></li>
+        <li>2 stays in the corner, ready to shoot.</li>
+        <li>1 runs back toward half court. <b>Safety: if time is almost up, throw it to 1.</b></li>
+      </ol>
+    </section>
+
+    <section class="block play" id="o-break">
+      <h2>Transition: 3-Lane Fast Break</h2>
+      <p><b>The idea:</b> as soon as we get the ball, we RUN. If we get down the court before their defense, we get easy layups. Dragons fly!</p>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=3+lane+fast+break" target="_blank" rel="noopener">3 lane fast break</a><a href="https://www.youtube.com/results?search_query=fill+the+lanes+fast+break" target="_blank" rel="noopener">fill the lanes fast break</a></p>
+      <figure class="diagram full" data-d="fastbreak"><figcaption>3-lane fast break · we rebound at the bottom and attack the top basket</figcaption></figure>
+      <h4 class="label-h">Everyone's Job</h4>
+      <div class="tbl"><table>
+        <thead><tr><th>Player</th><th>Job</th></tr></thead>
+        <tbody>
+          <tr><td>5</td><td>Grab the rebound, turn to the outside, pass to 1. Then jog back as the safety.</td></tr>
+          <tr><td>1</td><td>Get open on the side for the outlet pass. Dribble hard down the <b>middle</b>.</td></tr>
+          <tr><td>2</td><td>Sprint down the <b>left lane</b> (next to the sideline). Cut to the basket at the end.</td></tr>
+          <tr><td>3</td><td>Sprint down the <b>right lane</b>. Cut to the basket at the end.</td></tr>
+          <tr><td>4</td><td>Run behind the play as the <b>trailer</b>. Stop at the top of the key.</td></tr>
+        </tbody>
+      </table></div>
+      <h4 class="label-h">Steps</h4>
+      <ol class="steps">
+        <li>5 rebounds and throws the outlet pass to 1 on the side.</li>
+        <li>1 dribbles down the middle of the court. 2 and 3 sprint wide down each sideline.</li>
+        <li>1 stops at the free-throw line. 2 and 3 cut to the basket from the sides.</li>
+        <li>1 passes to whoever is open, or keeps going for the layup.</li>
+        <li>4 arrives as the trailer for a shot or pass. 5 stays back so they can't fast break us.</li>
+      </ol>
+      <h4 class="label-h">Fast Break Rules</h4>
+      <ul class="checks">
+        <li>Run wide! Stay in your lane until the free-throw line.</li>
+        <li>Pass ahead. A pass is faster than a dribble.</li>
+        <li>Layups only. If there's no layup, pull it out and run our offense.</li>
+      </ul>
+      <h4 class="label-h">Try These Variations</h4>
+      <ul class="checks">
+        <li><b>2-ON-1:</b> if only one defender is back, the dribbler drives at them and passes as soon as they commit.</li>
+        <li><b>3-ON-2:</b> 1 stops at the free-throw line and passes to the open wing.</li>
+        <li><b>FOLLOW THE MAKE:</b> after they score, 5 grabs the ball, steps out of bounds fast, and inbounds to 1. We still run!</li>
+      </ul>
+    </section>
+
+    <section class="block play" id="o-pressbreak">
+      <h2>Press Break: 4-Across</h2>
+      <p><b>The idea:</b> when the other team presses us, we beat it by <b>passing</b>. Passing is the only way to break a press. A dribbler gets trapped. A pass gets out of the trap. Spread out, get it in, and pass it up the court. Beating a press with passes usually ends in a layup!</p>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=4+across+press+break" target="_blank" rel="noopener">4 across press break</a><a href="https://www.youtube.com/results?search_query=1-4+press+break" target="_blank" rel="noopener">1-4 press break</a></p>
+      <figure class="diagram full" data-d="pressbreak"><figcaption>4-across press break · we inbound at the bottom and pass up the court</figcaption></figure>
+      <p><b>Start:</b> 4 passes it in (tall, good passer). 3, 1, 2 and 5 stand in a line across the free-throw line extended. 3 and 5 on the sidelines, 1 and 2 in the middle.</p>
+      <ol class="steps">
+        <li>On the slap, 1 and 2 cut toward the ball to get open.</li>
+        <li>3 and 5 sprint long, up the sidelines to half court.</li>
+        <li>4 passes to whichever guard is open (usually 1).</li>
+        <li>1 turns and looks up the court. First look: pass to 3 up the sideline. Second look: pass to 2 flashing into the middle.</li>
+        <li>4 steps in after the pass and stays behind the ball as the safety, in case 1 needs to pass back.</li>
+      </ol>
+      <h4 class="label-h">Press Break Rules: Pass, Don't Dribble</h4>
+      <ul class="checks">
+        <li><b>The only way to beat a press is to pass.</b> No defender can run faster than a pass.</li>
+        <li>Catch, turn, and look up the court. Find the open Dragon before you even think about dribbling.</li>
+        <li>Two defenders coming at you? That means a teammate is open. Pass it!</li>
+        <li>Never dribble into a corner or along the sideline. That's where traps happen.</li>
+        <li>Short, sharp passes to teammates moving toward you. No long lobs.</li>
+        <li>The middle of the court is open. Get the ball there with a pass.</li>
+        <li>No ball? Move to an open spot and give the passer a target.</li>
+      </ul>
+      <h4 class="label-h">Try These Variations</h4>
+      <ul class="checks">
+        <li><b>SCREEN:</b> 2 screens for 1, then cuts to the ball too.</li>
+        <li><b>LONG:</b> their back defender is too close? 3 or 5 runs all the way to the basket for a pass.</li>
+        <li><b>RESET:</b> trapped? Pass back to 4, the safety, and swing it to the other side.</li>
+        <li><b>VS MAN PRESS:</b> same setup. 1 and 2 cut hard to get open, and we pass it up the floor. Never let one player try to dribble through it alone.</li>
+      </ul>
+    </section>
+
+    <section class="block play" id="o-quiz">
+      <h2>Offense Quiz</h2>
+      <p class="lead">Can you answer these without looking? Tap a question to check. Quiz a teammate too!</p>
+      <h4 class="label-h">Offense</h4>
+      <div class="quiz">
+        <details class="q"><summary>1. Name the 9 spots on the court.</summary><p class="ans">2 top spots, 2 wings, the free-throw line, 2 elbows and 2 blocks.</p></details>
+        <details class="q"><summary>2. A teammate is already in the spot you want. What do you do?</summary><p class="ans">Go to a different open spot. One Dragon per spot.</p></details>
+        <details class="q"><summary>3. What do you do right after you pass?</summary><p class="ans">Move: cut to the basket, screen away, or go to a new spot.</p></details>
+        <details class="q"><summary>4. Your defender jumps in front of you to stop the pass. What cut do you make?</summary><p class="ans">A backdoor cut.</p></details>
+        <details class="q"><summary>5. How do we beat a press?</summary><p class="ans">By passing. A dribbler gets trapped. A pass gets out of the trap.</p></details>
+      </div>
+      <h4 class="label-h">Inbounds</h4>
+      <div class="quiz">
+        <details class="q"><summary>6. What has to happen before anyone moves?</summary><p class="ans">3 yells the play name and slaps the ball.</p></details>
+        <details class="q"><summary>7. How many seconds do we have to pass it in?</summary><p class="ans">5 seconds.</p></details>
+        <details class="q"><summary>8. Who is the safety in BOX?</summary><p class="ans">1, who steps back to the top.</p></details>
+      </div>
+      <h4 class="label-h">My Offense Checklist</h4>
+      <ul class="checklist">
+        <li><label><input type="checkbox" id="ck-o1"> I know my number.</label></li>
+        <li><label><input type="checkbox" id="ck-o2"> I know all 9 spots and how to find the open one.</label></li>
+        <li><label><input type="checkbox" id="ck-o3"> I know my job in all 3 inbound plays.</label></li>
+        <li><label><input type="checkbox" id="ck-o4"> I know my job in the fast break and the press break.</label></li>
+        <li><label><input type="checkbox" id="ck-o5"> I hustle on every play. 🐉</label></li>
+      </ul>
+    </section>
+    <footer>St. Monica's Basketball · Offensive Plays</footer>
+  </div>
+</main>
+
+<!-- ================= DEFENSE ================= -->
+<main id="view-defense" hidden>
+  <div class="topbar"><div class="wrap"><button class="back" data-go="home">← Home</button><span class="name">Defense</span></div></div>
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">Dragons Playbook</div>
+      <h1>Defense</h1>
+      <p>Three half-court defenses and our full court press. Learn one each week, then try the quiz at the bottom.</p>
+    </div>
+    <nav class="jump" aria-label="On this page">
+      <a href="#d-man">Man-To-Man</a>
+      <a href="#d-32">3-2 Zone</a>
+      <a href="#d-131">1-3-1 Zone</a>
+      <a href="#d-press">2-2-1 Press</a>
+      <a href="#d-quiz">Quiz</a>
+    </nav>
+    <div class="callout">
+      <p><strong>Dragons Are LOUD On Defense.</strong> Our words:</p>
+      <div class="words"><span>BALL</span><span>HELP</span><span>SCREEN</span><span>SHOT</span><span>DEAD</span><span>SWITCH</span></div>
+    </div>
+
+    <section class="block play" id="d-man">
+      <h2>Defense 1: Man-To-Man</h2>
+      <p><b>The idea:</b> you guard one player. Wherever they go, you go.</p>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=man+to+man+defense+youth+basketball" target="_blank" rel="noopener">man to man defense youth basketball</a><a href="https://www.youtube.com/results?search_query=help+side+defense" target="_blank" rel="noopener">help side defense</a></p>
+      <div class="callout"><p><strong>The Golden Rule: Ball – You – Basket.</strong> Always stay between your player and the basket. Always be able to see the ball.</p></div>
+      <h4 class="label-h">Where Do I Stand?</h4>
+      <div class="tbl"><table>
+        <thead><tr><th>If your player…</th><th>You should…</th></tr></thead>
+        <tbody>
+          <tr><td>Has the ball</td><td>Get close (one arm away). Stay low. Hand up.</td></tr>
+          <tr><td>Is one pass away</td><td>Put a hand in the passing lane so they can't catch it easily.</td></tr>
+          <tr><td>Is far from the ball</td><td>Sag toward the middle of the lane. Point one hand at the ball and one at your player.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="two">
+        <div class="card"><h3>Guarding The Ball</h3>
+          <ol class="steps">
+            <li>Get low: feet wide, knees bent, like you're sitting in a chair.</li>
+            <li>Slide your feet. Don't cross them. Don't jump at fakes.</li>
+            <li>Push the dribbler toward the sideline, not the middle.</li>
+            <li>If they stop dribbling, get right up on them and yell <b>"DEAD!"</b></li>
+          </ol>
+        </div>
+        <div class="card"><h3>Helping A Teammate</h3>
+          <ul class="checks">
+            <li>If a teammate gets beat, step in front of the driver and yell <b>"HELP!"</b></li>
+            <li>Every time the ball is passed, everyone moves. Move while the ball is in the air.</li>
+          </ul>
+        </div>
+        <div class="card"><h3>Screens</h3>
+          <ul class="checks">
+            <li>If you see a screen coming, yell <b>"SCREEN!"</b> so your teammate knows.</li>
+            <li>Fight over the screen and stay with your player. Only switch if the coach says <b>"SWITCH."</b></li>
+          </ul>
+        </div>
+        <div class="card"><h3>When They Shoot</h3>
+          <ul class="checks">
+            <li>Yell <b>"SHOT!"</b> Find your player, put your back on them (box out), then go get the ball.</li>
+            <li>Defense isn't done until a Dragon has the ball.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block play" id="d-32">
+      <h2>Defense 2: 3-2 Zone</h2>
+      <p><b>The idea:</b> you guard an area, not a player. Three Dragons stand up top. Two Dragons stand down low by the basket. Whoever comes into your area, you guard them.</p>
+      <p><b>We use it when:</b> the other team has good shooters or fast guards.</p>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=3-2+zone+defense" target="_blank" rel="noopener">3-2 zone defense</a></p>
+      <figure class="diagram" data-d="zone32"><figcaption>3-2 zone · starting spots</figcaption></figure>
+      <h4 class="label-h">Your Job</h4>
+      <div class="tbl"><table>
+        <thead><tr><th>Spot</th><th>Your job</th></tr></thead>
+        <tbody>
+          <tr><td>Top (1)</td><td>Pressure the ball. Don't let it go into the middle.</td></tr>
+          <tr><td>Wings (2, 3)</td><td>Guard the ball on your side. When the ball is on the other side, slide to the middle.</td></tr>
+          <tr><td>Low (4, 5)</td><td>Guard near the basket. Run out to the corner on your side. Rebound!</td></tr>
+        </tbody>
+      </table></div>
+      <h4 class="label-h">Where The Ball Goes, We Go</h4>
+      <ul class="checks">
+        <li><b>Ball at the top:</b> 1 guards it. Everyone else stays in their spot with hands up.</li>
+        <li><b>Ball on a wing:</b> that wing guards it. 1 slides over to block the pass into the middle.</li>
+        <li><b>Ball in the corner:</b> the low player on that side runs out to guard it. The other low player slides over to the block.</li>
+        <li><b>Ball in the middle (free-throw line):</b> the closest player jumps on it right away.</li>
+      </ul>
+      <div class="callout"><p><strong>Watch out!</strong> The 3-2 has holes in the middle and down by the baseline. Talk a lot so nobody gets lost.</p></div>
+      <h4 class="label-h">Remember</h4>
+      <ul class="checks">
+        <li>Hands up and wide. Make it hard to pass.</li>
+        <li>Move while the pass is in the air, not after it's caught.</li>
+        <li>When they shoot, find someone near you and box out.</li>
+      </ul>
+    </section>
+
+    <section class="block play" id="d-131">
+      <h2>Defense 3: 1-3-1 Zone</h2>
+      <p><b>The idea:</b> one Dragon up top, three Dragons in a line across the middle, and one Dragon down on the baseline. It looks like a plus sign.</p>
+      <p><b>We use it when:</b> we want to trap the ball and get steals.</p>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=1-3-1+zone+defense" target="_blank" rel="noopener">1-3-1 zone defense</a><a href="https://www.youtube.com/results?search_query=1-3-1+trap" target="_blank" rel="noopener">1-3-1 trap</a></p>
+      <figure class="diagram" data-d="zone131"><figcaption>1-3-1 zone · starting spots. 4 runs corner to corner.</figcaption></figure>
+      <h4 class="label-h">Your Job</h4>
+      <div class="tbl"><table>
+        <thead><tr><th>Spot</th><th>Your job</th></tr></thead>
+        <tbody>
+          <tr><td>Top (1)</td><td>Chase the ball to one side. Then don't let them pass it back to the top.</td></tr>
+          <tr><td>Wings (2, 3)</td><td>Trap the ball with 1 when it comes to your side. Long arms!</td></tr>
+          <tr><td>Middle (5)</td><td>Stand at the free-throw line. Don't let anyone catch it there.</td></tr>
+          <tr><td>Baseline (4)</td><td>Run corner to corner. Guard whoever has the ball down low.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout"><p><strong>What's a trap?</strong> Two Dragons guard the player with the ball at the same time. Box them in with your feet and keep your hands straight up. No reaching, no fouling.</p></div>
+      <h4 class="label-h">Where The Ball Goes, We Go</h4>
+      <ul class="checks">
+        <li><b>Ball at the top:</b> 1 guards it and pushes it to one side.</li>
+        <li><b>Ball on a wing:</b> that wing and 1 trap it. Everyone else watches for a bad pass to steal.</li>
+        <li><b>Ball in the corner:</b> 4 sprints out and guards it. 5 drops down to the block.</li>
+        <li><b>Ball goes to the other side:</b> everyone slides over and does the same thing on that side.</li>
+      </ul>
+      <div class="callout"><p><strong>Watch out!</strong> The corners are the weak spot. 4 has to run hard and yell <b>"CORNER!"</b> every time.</p></div>
+      <h4 class="label-h">Remember</h4>
+      <ul class="checks">
+        <li>Traps use feet, not hands.</li>
+        <li>After a trap, look for the steal.</li>
+        <li>When they shoot, everyone crashes the boards.</li>
+      </ul>
+    </section>
+
+    <section class="block play" id="d-press">
+      <h2>Full Court Press: 2-2-1</h2>
+      <p><b>The idea:</b> we play defense on the whole court. We let them pass it in, then trap them by the sideline and steal it. Breathe fire!</p>
+      <p class="yt">📺 Search YouTube or TikTok: <a href="https://www.youtube.com/results?search_query=2-2-1+press" target="_blank" rel="noopener">2-2-1 press</a><a href="https://www.youtube.com/results?search_query=2-2-1+zone+press" target="_blank" rel="noopener">2-2-1 zone press</a></p>
+      <figure class="diagram full" data-d="press221"><figcaption>2-2-1 press · they bring the ball down the left sideline (X) and 1 and 3 trap</figcaption></figure>
+      <h4 class="label-h">Where We Start (After We Score)</h4>
+      <div class="tbl"><table>
+        <thead><tr><th>Row</th><th>Who</th><th>Job</th></tr></thead>
+        <tbody>
+          <tr><td>Front</td><td>1 and 2</td><td>Stand at the free-throw line. Let the pass come in, then push the dribbler to the sideline.</td></tr>
+          <tr><td>Middle</td><td>3 and 4</td><td>Stand near half court. When the ball comes up your sideline, run up and trap.</td></tr>
+          <tr><td>Back</td><td>5</td><td>Stay back by our basket. Steal long passes. Never let anyone behind you.</td></tr>
+        </tbody>
+      </table></div>
+      <h4 class="label-h">Steps</h4>
+      <ol class="steps">
+        <li>They pass it in. The front player on that side gets in front of the dribbler and keeps them on the sideline. Don't let them go to the middle!</li>
+        <li>When the dribbler gets near half court, the middle player on that side runs up and traps with the front player.</li>
+        <li>The other front player sprints to the middle to steal the pass back.</li>
+        <li>The other middle player slides to the middle of the court.</li>
+        <li>5 moves toward the ball side to steal a long pass.</li>
+      </ol>
+      <h4 class="label-h">Press Rules</h4>
+      <ul class="checks">
+        <li>Trap with your feet and chest. Hands up. No reaching, no fouling.</li>
+        <li>Keep the ball out of the middle.</li>
+        <li>If they get past the press, <b>everyone sprints back</b> to our basket.</li>
+      </ul>
+      <h4 class="label-h">Try These Variations</h4>
+      <ul class="checks">
+        <li><b>HALF COURT TRAP:</b> the front players start at half court instead. Less running, still traps.</li>
+        <li><b>DENY:</b> the front players guard the inbound passer's teammates closely to try to get a 5-second call.</li>
+        <li><b>FAKE PRESS:</b> line up in the press, then drop back to our half-court defense. It wastes their time.</li>
+      </ul>
+    </section>
+
+    <section class="block play" id="d-quiz">
+      <h2>Defense Quiz</h2>
+      <p class="lead">Can you answer these without looking? Tap a question to check. Quiz a teammate too!</p>
+      <div class="quiz">
+        <details class="q"><summary>1. What are the three words of the golden rule? (Ball – ___ – ___)</summary><p class="ans">Ball – You – Basket.</p></details>
+        <details class="q"><summary>2. What do you yell when your teammate gets beat?</summary><p class="ans">"HELP!"</p></details>
+        <details class="q"><summary>3. In the 3-2, how many Dragons are up top?</summary><p class="ans">Three.</p></details>
+        <details class="q"><summary>4. In the 1-3-1, who runs corner to corner?</summary><p class="ans">4, the baseline player.</p></details>
+        <details class="q"><summary>5. What is a trap?</summary><p class="ans">Two Dragons guard the player with the ball at the same time, using their feet, with hands straight up.</p></details>
+      </div>
+      <h4 class="label-h">My Defense Checklist</h4>
+      <ul class="checklist">
+        <li><label><input type="checkbox" id="ck-d1"> I know my number.</label></li>
+        <li><label><input type="checkbox" id="ck-d2"> I know my spot in all 3 defenses.</label></li>
+        <li><label><input type="checkbox" id="ck-d3"> I know my job in the 2-2-1 press.</label></li>
+        <li><label><input type="checkbox" id="ck-d4"> I hustle on every play. 🐉</label></li>
+      </ul>
+    </section>
+    <footer>St. Monica's Basketball · Defense</footer>
+  </div>
+</main>
+
+<script>
+// Scorecard areas from the player packet
+const AREAS = [
+  { name: "Ball Handling", about: "How well the player controls the ball under pressure.",
+    checks: ["Dribbles with both hands", "Keeps their head up", "Protects the ball when guarded", "Doesn't panic, pick up the dribble or lose the ball in traffic"],
+    hi: "Confident with either hand, strong control, doesn't lose the ball when guarded.",
+    lo: "Loses the ball often and avoids their weak hand." },
+  { name: "Layups And Finishing", about: "Footwork, touch and control at game speed.",
+    checks: ["Makes layups from both sides", "Uses the correct hand on each side", "Still finishes when someone contests"],
+    hi: "Makes most layups at full speed with correct footwork, either hand.",
+    lo: "Misses open layups, travels on the gather, unsure which hand to use." },
+  { name: "Free Throws", about: "Form, confidence and making free throws when tired.",
+    checks: ["Uses a repeatable shooting motion", "Stays calm on the line", "Hits at a decent rate"],
+    hi: "Smooth, repeatable form. A shooter you trust late in a game.",
+    lo: "Very inconsistent form, throws the ball, very low make rate." },
+  { name: "Agility And Footwork", about: "Speed, balance, body control and changing direction.",
+    checks: ["Stays low in stance", "Slides feet and recovers", "Moves like an athlete instead of getting off balance"],
+    hi: "Quick first step, light on their feet, stays low, cuts fast.",
+    lo: "Slow to react, stands tall, stumbles on changes of direction." },
+  { name: "Defense", about: "Guarding the ball and effort on that end.",
+    checks: ["Stays in front without fouling", "Contests shots", "Talks on defense and helps teammates", "Tries to rebound"],
+    hi: "Takes pride in defense: active hands, good stance, helps and recovers, talks.",
+    lo: "Gives up on the play, reaches instead of sliding, loses their player." },
+  { name: "Conditioning And Effort", about: "Motor and toughness when tired.",
+    checks: ["Still sprints when winded", "Finishes drills instead of quitting", "Keeps competing at the end of practice"],
+    hi: "High motor the whole time, chases every play.",
+    lo: "Out of gas early, coasts, doesn't want to finish reps." },
+  { name: "Sportsmanship And Coachability", about: "Attitude and impact on the team.",
+    checks: ["Listens the first time", "Encourages teammates", "Keeps positive body language", "Is a solution, not a problem"],
+    hi: "Respectful, lifts the group up, takes coaching and uses it.",
+    lo: "Negative to teammates, argues, makes excuses, hurts the group." },
+];
+
+const areasEl = document.getElementById("areas");
+for (const a of AREAS) {
+  const d = document.createElement("details"); d.className = "area";
+  const s = document.createElement("summary"); s.textContent = a.name; d.append(s);
+  const body = document.createElement("div"); body.className = "area-body";
+  const p = document.createElement("p"); p.textContent = a.about; body.append(p);
+  const ol = document.createElement("ol");
+  for (const c of a.checks) { const li = document.createElement("li"); li.textContent = c; ol.append(li); }
+  body.append(ol);
+  const looks = document.createElement("div"); looks.className = "looks";
+  for (const [cls, label, text] of [["hi", "What a 5 looks like", a.hi], ["lo", "What a 1 looks like", a.lo]]) {
+    const box = document.createElement("div"); box.className = "look " + cls;
+    const b = document.createElement("b"); b.textContent = label;
+    box.append(b, document.createTextNode(text)); looks.append(box);
+  }
+  body.append(looks); d.append(body); areasEl.append(d);
+}
+
+// Simple page switching
+const VIEWS = ["home", "parents", "offense", "defense"];
+function show(name, scroll = true) {
+  if (!VIEWS.includes(name)) name = "home";
+  for (const v of VIEWS) document.getElementById("view-" + v).hidden = v !== name;
+  if (scroll) window.scrollTo(0, 0);
+}
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-go]");
+  if (btn) show(btn.dataset.go);
+});
+// Opening a link with #parents, #offense or #defense goes straight to that page
+const start = location.hash.slice(1);
+if (VIEWS.includes(start)) show(start, false);
+else if (start) {
+  const target = document.getElementById(start);
+  const view = target?.closest("main");
+  if (view) { show(view.id.replace("view-", ""), false); target.scrollIntoView(); }
+}
+
+// ---------- Court diagrams ----------
+// Half court: 500 wide x 470 deep, baseline at y=0, basket at (250,55). Full court: 940 deep, baskets at both ends.
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.append(e);
+  return e;
+}
+function drawHalf(g) {
+  el("rect", { x: 0, y: 0, width: 500, height: 470, class: "court-bg" }, g);
+  el("rect", { x: 0, y: 0, width: 500, height: 470, class: "c-line" }, g);
+  el("rect", { x: 170, y: 0, width: 160, height: 190, class: "c-line" }, g);
+  el("path", { d: "M190 190 A60 60 0 0 0 310 190", class: "c-line" }, g);
+  el("path", { d: "M190 190 A60 60 0 0 1 310 190", class: "c-line dash" }, g);
+  el("path", { d: "M30 0 L30 55 A220 220 0 0 0 470 55 L470 0", class: "c-line" }, g);
+  el("line", { x1: 220, y1: 40, x2: 280, y2: 40, class: "c-line" }, g);
+  el("circle", { cx: 250, cy: 55, r: 9, class: "c-line" }, g);
+  el("rect", { x: 160, y: 70, width: 10, height: 8, class: "c-fill" }, g);
+  el("rect", { x: 330, y: 70, width: 10, height: 8, class: "c-fill" }, g);
+  el("path", { d: "M190 470 A60 60 0 0 1 310 470", class: "c-line" }, g);
+}
+const unit = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
+function trim(pts, s, e) {
+  const p = pts.map(q => q.slice());
+  if (s) { const u = unit(p[0], p[1]); p[0] = [p[0][0] + u[0] * s, p[0][1] + u[1] * s]; }
+  if (e) { const n = p.length, u = unit(p[n - 2], p[n - 1]); p[n - 1] = [p[n - 1][0] - u[0] * e, p[n - 1][1] - u[1] * e]; }
+  return p;
+}
+function at(p, t) {
+  if (p.length === 2) return [p[0][0] + (p[1][0] - p[0][0]) * t, p[0][1] + (p[1][1] - p[0][1]) * t];
+  const m = 1 - t;
+  return [m * m * p[0][0] + 2 * m * t * p[1][0] + t * t * p[2][0], m * m * p[0][1] + 2 * m * t * p[1][1] + t * t * p[2][1]];
+}
+const dOf = p => p.length === 2 ? `M${p[0]} L${p[1]}` : `M${p[0]} Q${p[1]} ${p[2]}`;
+function drawMove(g, type, pts, mk, opt = {}) {
+  if (type === "pass") {
+    const p = trim(pts, opt.s ?? 22, opt.e ?? 24);
+    el("path", { d: dOf(p), class: "mv pass", "marker-end": `url(#${mk})` }, g);
+  } else if (type === "cut") {
+    el("path", { d: dOf(pts), class: "mv", "marker-end": `url(#${mk})` }, g);
+  } else if (type === "dribble") {
+    let len = 0, prev = at(pts, 0);
+    for (let i = 1; i <= 20; i++) { const c = at(pts, i / 20); len += Math.hypot(c[0] - prev[0], c[1] - prev[1]); prev = c; }
+    const n = Math.max(6, Math.round(len / 14)), amp = opt.amp ?? 8, out = [];
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, c = at(pts, t), a = at(pts, Math.max(0, t - .01)), b = at(pts, Math.min(1, t + .01));
+      const u = unit(a, b), off = (i < 1 || i > n - 2) ? 0 : (i % 2 ? amp : -amp);
+      out.push([c[0] - u[1] * off, c[1] + u[0] * off]);
+    }
+    el("polyline", { points: out.map(q => q.join(",")).join(" "), class: "mv", "marker-end": `url(#${mk})` }, g);
+  } else if (type === "screen") {
+    el("path", { d: dOf(pts), class: "mv" }, g);
+    const n = pts.length, end = pts[n - 1], u = unit(at(pts, .9), end), h = opt.bar ?? 17;
+    el("line", { x1: end[0] - u[1] * h, y1: end[1] + u[0] * h, x2: end[0] + u[1] * h, y2: end[1] - u[0] * h, class: "mv bar" }, g);
+  }
+}
+function addMarker(svg, id) {
+  const defs = el("defs", {}, svg);
+  const m = el("marker", { id, viewBox: "0 0 10 10", refX: 7, refY: 5, markerWidth: 4, markerHeight: 4, orient: "auto" }, defs);
+  el("path", { d: "M0,0 L10,5 L0,10 z", class: "ah" }, m);
+}
+function drawPlayer(g, n, x, y, ball, r = 18) {
+  el("circle", { cx: x, cy: y, r, class: "pl" }, g);
+  const t = el("text", { x, y: y + 1, class: "pl-t" }, g); t.textContent = n;
+  if (ball) el("circle", { cx: x + r * .85, cy: y - r * .85, r: 7, class: "ball" }, g);
+}
+
+const DIAGRAMS = {
+  zone32: { players: [["1", 250, 300], ["2", 95, 200], ["3", 405, 200], ["4", 175, 95], ["5", 325, 95]] },
+  zone131: {
+    players: [["1", 250, 320], ["2", 80, 190], ["5", 250, 190], ["3", 420, 190], ["4", 250, 105]],
+    moves: [["cut", [[250, 105], [140, 70], [45, 45]]], ["cut", [[250, 105], [360, 70], [455, 45]]]],
+  },
+  spots9: { spots: [["T", 195, 310], ["T", 305, 310], ["W", 60, 215], ["W", 440, 215], ["FT", 250, 190], ["E", 170, 190], ["E", 330, 190], ["B", 150, 75], ["B", 350, 75]] },
+  passcutfill: {
+    players: [["1", 195, 310, true], ["2", 305, 310], ["3", 60, 215], ["4", 440, 215], ["5", 150, 75]],
+    moves: [["pass", [[195, 310], [60, 215]]], ["cut", [[195, 310], [215, 180], [255, 90]]],
+            ["cut", [[305, 310], [265, 338], [234, 334]]], ["cut", [[440, 215], [410, 300], [325, 318]]]],
+  },
+  screenaway: {
+    players: [["1", 195, 310, true], ["2", 325, 300], ["3", 60, 215], ["4", 440, 215], ["5", 350, 75]],
+    moves: [["pass", [[195, 310], [60, 215]]], ["screen", [[195, 310], [240, 315], [292, 296]]],
+            ["cut", [[325, 300], [300, 225], [205, 240]]]],
+  },
+  drivedrift: {
+    players: [["1", 195, 310, true], ["2", 305, 310], ["3", 60, 215], ["4", 440, 215], ["5", 350, 75]],
+    moves: [["dribble", [[195, 310], [200, 200], [225, 115]]], ["cut", [[60, 215], [25, 130], [22, 60]]],
+            ["cut", [[305, 310], [345, 295], [370, 262]]]],
+  },
+  box: {
+    players: [["3", 335, -28, true], ["4", 350, 75], ["5", 150, 75], ["2", 330, 190], ["1", 170, 190]],
+    moves: [["screen", [[350, 75], [270, 82], [200, 82]]], ["cut", [[150, 75], [210, 135], [290, 70]]],
+            ["cut", [[330, 190], [420, 140], [472, 55]]], ["cut", [[170, 190], [190, 270], [250, 315]]],
+            ["pass", [[335, -28], [290, 70]], { e: 6 }]],
+  },
+  line: {
+    players: [["3", 335, -28, true], ["5", 360, 70], ["4", 360, 120], ["2", 360, 170], ["1", 360, 220]],
+    moves: [["cut", [[360, 70], [310, 50], [268, 62]]], ["cut", [[360, 120], [440, 100], [475, 48]]],
+            ["cut", [[360, 170], [220, 245], [62, 215]]], ["cut", [[360, 220], [320, 300], [250, 322]]],
+            ["pass", [[335, -28], [272, 58]], { e: 6 }]],
+  },
+  slob: {
+    players: [["3", 518, 215, true], ["5", 390, 195], ["4", 350, 195], ["2", 470, 45], ["1", 130, 300]],
+    moves: [["cut", [[350, 195], [320, 120], [265, 72]]], ["cut", [[390, 195], [455, 210]]],
+            ["cut", [[130, 300], [150, 400], [210, 452]]], ["pass", [[518, 215], [410, 120], [272, 74]], { e: 6 }]],
+  },
+  fastbreak: {
+    full: true,
+    players: [["5", 250, 860], ["1", 420, 760], ["2", 90, 830], ["3", 470, 880], ["4", 180, 800]],
+    moves: [["pass", [[250, 860], [420, 760]]], ["dribble", [[420, 760], [270, 560], [250, 215]], { amp: 9 }],
+            ["cut", [[90, 830], [30, 250], [190, 85]]], ["cut", [[470, 880], [470, 250], [310, 85]]],
+            ["cut", [[180, 800], [220, 520], [250, 330]]], ["cut", [[250, 860], [250, 560]]]],
+  },
+  press221: {
+    full: true,
+    players: [["1", 170, 190], ["2", 330, 190], ["3", 90, 450], ["4", 410, 450], ["5", 250, 720]],
+    opp: [[40, 340, true]],
+    moves: [["cut", [[170, 190], [110, 250], [75, 315]]], ["cut", [[90, 450], [65, 410], [62, 370]]],
+            ["cut", [[330, 190], [290, 290], [240, 350]]], ["cut", [[410, 450], [330, 480], [265, 478]]],
+            ["cut", [[250, 720], [205, 700], [165, 645]]]],
+  },
+  pressbreak: {
+    full: true,
+    players: [["4", 250, 965, true], ["3", 40, 750], ["1", 180, 750], ["2", 320, 750], ["5", 460, 750]],
+    moves: [["cut", [[180, 750], [165, 810], [190, 860]]], ["cut", [[320, 750], [335, 810], [310, 860]]],
+            ["cut", [[40, 750], [20, 600], [40, 470]]], ["cut", [[460, 750], [480, 600], [460, 470]]],
+            ["pass", [[250, 965], [190, 860]], { e: 6 }], ["pass", [[190, 860], [110, 660], [45, 485]], { s: 4, e: 6 }]],
+  },
+};
+
+document.querySelectorAll("figure.diagram").forEach((fig, i) => {
+  const d = DIAGRAMS[fig.dataset.d];
+  if (!d) return;
+  const vb = d.full ? [-40, -40, 580, 1030] : [-40, -55, 580, 545];
+  const svg = el("svg", { viewBox: vb.join(" "), role: "img", "aria-label": fig.querySelector("figcaption")?.textContent || "" });
+  const mk = "ah" + i;
+  addMarker(svg, mk);
+  el("rect", { x: vb[0], y: vb[1], width: vb[2], height: vb[3], class: "court-out" }, svg);
+  drawHalf(el("g", {}, svg));
+  if (d.full) drawHalf(el("g", { transform: "matrix(1 0 0 -1 0 940)" }, svg));
+  for (const [type, pts, opt] of d.moves || []) drawMove(svg, type, pts, mk, opt);
+  for (const [label, x, y] of d.spots || []) {
+    el("circle", { cx: x, cy: y, r: 17, class: "spot" }, svg);
+    const t = el("text", { x, y: y + 1, class: "spot-t" }, svg); t.textContent = label;
+  }
+  for (const [x, y, ball] of d.opp || []) {
+    el("path", { d: `M${x - 12} ${y - 12} L${x + 12} ${y + 12} M${x + 12} ${y - 12} L${x - 12} ${y + 12}`, class: "opp" }, svg);
+    if (ball) el("circle", { cx: x + 16, cy: y - 14, r: 7, class: "ball" }, svg);
+  }
+  for (const [n, x, y, ball] of d.players || []) drawPlayer(svg, n, x, y, ball);
+  fig.prepend(svg);
+});
+
+// Legend samples for "Reading The Pictures"
+document.querySelectorAll("[data-legend]").forEach((span, i) => {
+  const svg = el("svg", { viewBox: "0 0 110 36", "aria-hidden": "true" }, span);
+  const mk = "lg" + i, type = span.dataset.legend;
+  addMarker(svg, mk);
+  if (type === "player") { drawPlayer(svg, "1", 40, 18, true, 14); return; }
+  drawMove(svg, type, [[8, 18], [100, 18]], mk, { s: 0, e: 0, amp: 6, bar: 12 });
+});
+
+// Checklists remember ticks on this device
+const CK = "smb-checklist";
+let ticks = {};
+try { ticks = JSON.parse(localStorage.getItem(CK) || "{}"); } catch (e) {}
+document.querySelectorAll(".checklist input").forEach(box => {
+  box.checked = !!ticks[box.id];
+  box.addEventListener("change", () => {
+    ticks[box.id] = box.checked;
+    try { localStorage.setItem(CK, JSON.stringify(ticks)); } catch (e) {}
+  });
+});
+
+// Copy email
+document.getElementById("copy-email").addEventListener("click", () => {
+  const msg = document.getElementById("copy-msg");
+  const text = document.getElementById("email").textContent;
+  navigator.clipboard.writeText(text).then(
+    () => { msg.textContent = "Copied"; },
+    () => {
+      const r = document.createRange(); r.selectNodeContents(document.getElementById("email"));
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      msg.textContent = "Selected. Press copy on your device.";
+    }
+  );
+});
+</script>
+</body>
+</html>
