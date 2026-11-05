@@ -169,14 +169,28 @@ details.tip[open] summary::after { content: "–"; }
 .sandwich .bread b { color: var(--go); }
 .sandwich .filling { background: var(--orange-soft); }
 .sandwich .filling b { color: var(--orange); }
-.schedule { margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-.slot { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
-.slot .time { font-family: var(--font-display); font-weight: 900; font-size: 36px; line-height: 1; font-variant-numeric: tabular-nums; }
-.slot .team { margin-top: 4px; font-weight: 600; color: var(--muted); }
-.rosters { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 600px) { .rosters { grid-template-columns: 1fr; } }
-.roster h3 { font-family: var(--font-display); font-size: 26px; font-weight: 800; text-transform: uppercase; }
-.roster p { margin-top: 8px; color: var(--muted); font-style: italic; }
+/* Season schedule */
+.sched-anchor { scroll-margin-top: 70px; margin-top: 18px; }
+.sched-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.sched-filter button { background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 15px; cursor: pointer; }
+.sched-filter button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--navy-ink); }
+.sched-list { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; }
+.game { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; }
+.game.tourney { border-left: 6px solid var(--orange); }
+.game.past { opacity: .55; }
+.game.next { border-color: var(--orange); box-shadow: 0 0 0 2px var(--orange); }
+.game .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.game .when { font-family: var(--font-display); font-weight: 800; font-size: 22px; text-transform: uppercase; line-height: 1.1; }
+.game .who { font-weight: 700; font-size: 17px; }
+.game .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-radius: 4px; padding: 2px 8px; }
+.game .tag.dg { background: var(--stop-soft); color: var(--stop); }
+.game .tag.nx { background: var(--orange); color: #fff; }
+.game .times { display: flex; flex-wrap: wrap; gap: 6px; }
+.game .time { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; font-size: 15px; }
+.game .time b { font-variant-numeric: tabular-nums; }
+.game .where { font-size: 15px; color: var(--muted); }
+.game .where a { font-weight: 600; }
+.sched-note { margin-top: 10px; font-size: 14px; color: var(--muted); }
 
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
 @media (max-width: 600px) { .two { grid-template-columns: 1fr; } }
@@ -341,11 +355,11 @@ html { scroll-behavior: smooth; }
       <a href="#students">Players</a>
       <a href="#fouls">Fouls</a>
       <a href="#parents">Parents</a>
+      <a href="#schedule">Schedule</a>
       <a href="#gameday">Game Day</a>
       <a href="#playing-time">Playing Time</a>
       <a href="#scorecard">Scorecard</a>
       <a href="#contact">Contact</a>
-      <a href="#rosters">Team Rosters</a>
     </nav>
 
     <!-- Welcome -->
@@ -444,11 +458,11 @@ html { scroll-behavior: smooth; }
     <!-- Game day -->
     <section class="block" id="gameday">
       <h2>Game Day</h2>
-      <div class="schedule">
-        <div class="slot"><div class="time">4:30</div><div class="team">B Team Girls</div></div>
-        <div class="slot"><div class="time">5:30</div><div class="team">B Team Boys</div></div>
-        <div class="slot"><div class="time">6:30</div><div class="team">A Team Girls</div></div>
-        <div class="slot"><div class="time">7:30</div><div class="team">A Team Boys</div></div>
+      <div id="schedule" class="sched-anchor">
+        <h3 class="sub-h">Season Schedule</h3>
+        <div class="sched-filter" role="group" aria-label="Show games for" id="sched-filter" data-i18n-skip></div>
+        <ol class="sched-list" id="sched-list" data-i18n-skip></ol>
+        <p class="sched-note" id="sched-note" data-i18n-skip></p>
       </div>
       <div class="callout"><p><strong>Please bring snacks or feed your child before the game.</strong> Some games run late, and that's a long time for them to go without food.</p></div>
       <div class="facts">
@@ -512,17 +526,6 @@ html { scroll-behavior: smooth; }
         <span class="copy-msg" id="copy-msg" aria-live="polite"></span>
       </div>
       <p style="margin-top:14px" class="sign">Committed to your success,<br>Coach Kristen Lopez</p>
-    </section>
-
-    <!-- Rosters -->
-    <section class="block" id="rosters">
-      <h2>Team Rosters</h2>
-      <div class="rosters">
-        <div class="card roster"><h3>B Team Girls</h3><p>Names coming soon</p></div>
-        <div class="card roster"><h3>B Team Boys</h3><p>Names coming soon</p></div>
-        <div class="card roster"><h3>A Team Girls</h3><p>Names coming soon</p></div>
-        <div class="card roster"><h3>A Team Boys</h3><p>Names coming soon</p></div>
-      </div>
     </section>
 
     <footer>St. Monica's Basketball · Parent Night</footer>
@@ -1320,6 +1323,106 @@ document.querySelectorAll(".checklist input").forEach(box => {
   });
 });
 
+// ---------- Season schedule ----------
+// Times per team: bg = B Team Girls, bb = B Team Boys, ag = A Team Girls, ab = A Team Boys. Leave a team out if it doesn't play.
+const SCHEDULE = [
+  { start: "2026-11-13", end: "2026-11-14", vs: "OLPH Tournament", tourney: true, t: { bg: "TBA: 2 teams of 4" }, away: "16075 N Evans Rd, Selma, TX 78154" },
+  { start: "2026-11-17", vs: "St. John Bosco", t: { bb: "4:30 PM", ab: "5:30 PM" }, away: "5630 W Commerce St, San Antonio, TX 78237" },
+  { start: "2026-11-18", vs: "Mount Sacred Heart", t: { bb: "4:30 PM", ag: "5:30 PM", ab: "6:30 PM" }, away: "619 Mt Sacred Heart Rd, San Antonio, TX 78216" },
+  { start: "2026-11-30", vs: "Blessed Father Moye", t: { bg: "4:30 PM", bb: "5:30 PM", ab: "6:30 PM*" } },
+  { start: "2026-12-02", vs: "Holy Name: Play at St. Gerard", t: { ag: "4:30 PM", ab: "5:30 PM" }, away: "521 S New Braunfels Ave, San Antonio, TX 78203" },
+  { start: "2026-12-07", vs: "St. John Berchmans", t: { bg: "4:30 PM", ab: "5:30 PM" } },
+  { start: "2026-12-09", vs: "St. James SA", t: { bg: "4:30 PM", bb: "5:30 PM", ag: "6:30 PM", ab: "7:30 PM" }, away: "907 W Theo Ave, San Antonio, TX 78255" },
+  { start: "2026-12-10", end: "2026-12-12", vs: "St. Mary Magdalen Tournament", tourney: true, t: { ag: "TBA", ab: "TBA" }, away: "1700 Clower, San Antonio, TX 78201" },
+  { start: "2026-12-14", vs: "St. James Seguin", dg: true, t: { ab: "4:30 PM" }, away: "507 S Camp Street, Seguin, TX 78155" },
+  { start: "2027-01-06", vs: "St. Gregory", dg: true, t: { bg: "4:30 PM", bb: "5:30 PM", ag: "6:30 PM", ab: "7:30 PM" } },
+  { start: "2027-01-07", vs: "Notre Dame", dg: true, t: { bb: "4:30 PM", ag: "5:30 PM", ab: "6:30 PM" }, away: "235 Peterson Farm Rd, Kerrville, TX 78028" },
+  { start: "2027-01-11", vs: "Little Flower", dg: true, t: { bb: "4:30 PM", ag: "5:30 PM", ab: "6:30 PM" }, away: "905 Kentucky Ave, San Antonio, TX 78201" },
+  { start: "2027-01-13", vs: "Blessed Sacrament", dg: true, t: { bb: "4:30 PM", ag: "5:30 PM", ab: "6:30 PM" } },
+  { start: "2027-01-14", end: "2027-01-16", vs: "St. Mary Magdalen Tournament", tourney: true, t: { bg: "TBA", bb: "TBA" }, away: "1700 Clower, San Antonio, TX 78201" },
+  { start: "2027-01-19", vs: "St. Pius X", dg: true, t: { bb: "4:30 PM", ag: "5:30 PM", ab: "6:30 PM" }, note: "8th grade night" },
+  { start: "2027-01-20", vs: "St. Peter the Apostle Boerne", dg: true, t: { bg: "4:30 PM", bb: "5:30 PM" } },
+  { start: "2027-02-01", end: "2027-02-05", vs: "AIAL Championships", tourney: true, t: {} },
+];
+const TEAMS = { bg: ["B Team Girls", "Equipo B Niñas"], bb: ["B Team Boys", "Equipo B Niños"], ag: ["A Team Girls", "Equipo A Niñas"], ab: ["A Team Boys", "Equipo A Niños"] };
+const SCHED_WORDS = {
+  all: ["All Teams", "Todos Los Equipos"], home: ["Home", "En casa"], away: ["Away", "Visitante"], map: ["Map", "Mapa"],
+  next: ["Next Up", "Siguiente"], dg: ["DG", "DG"], tba: ["TBA", "Por confirmar"], teamsOf4: ["TBA: 2 teams of 4", "Por confirmar: 2 equipos de 4"],
+  "8th grade night": ["8th grade night", "Noche de 8º grado"], tourney: ["Tournament", "Torneo"],
+  "Holy Name: Play at St. Gerard": ["Holy Name: Play at St. Gerard", "Holy Name: se juega en St. Gerard"],
+  none: ["No games for this team.", "No hay partidos para este equipo."],
+  noteTxt: ["Times and locations can change. Watch for updates from the school.", "Los horarios y lugares pueden cambiar. Estén al pendiente de los avisos de la escuela."],
+  filter: ["Show games for", "Ver partidos de"],
+};
+const w = k => SCHED_WORDS[k][lang === "es" ? 1 : 0];
+let schedTeam = "all";
+const dayOf = iso => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
+function fmtDay(iso, withWeekday = true) {
+  return dayOf(iso).toLocaleDateString(lang === "es" ? "es-MX" : "en-US", withWeekday ? { weekday: "short", month: "short", day: "numeric" } : { month: "short", day: "numeric" });
+}
+function fmtWhen(g) { return g.end ? fmtDay(g.start) + " – " + fmtDay(g.end) : fmtDay(g.start); }
+function fmtTime(v) {
+  if (v === "TBA") return w("tba");
+  if (v === "TBA: 2 teams of 4") return w("teamsOf4");
+  return lang === "es" ? v.replace(" PM", " p.m.") : v;
+}
+function drawSchedule() {
+  const list = document.getElementById("sched-list"), bar = document.getElementById("sched-filter");
+  if (!list) return;
+  bar.replaceChildren(); bar.setAttribute("aria-label", w("filter"));
+  for (const key of ["all", "bg", "bb", "ag", "ab"]) {
+    const b = document.createElement("button"); b.type = "button"; b.dataset.team = key;
+    b.textContent = key === "all" ? w("all") : TEAMS[key][lang === "es" ? 1 : 0];
+    b.setAttribute("aria-pressed", String(key === schedTeam)); bar.append(b);
+  }
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const games = SCHEDULE.filter(g => schedTeam === "all" || g.t[schedTeam] || (g.vs === "AIAL Championships"));
+  const nextGame = games.find(g => dayOf(g.end || g.start) >= today);
+  list.replaceChildren();
+  for (const g of games) {
+    const li = document.createElement("li");
+    li.className = "game" + (g.tourney ? " tourney" : "") + (dayOf(g.end || g.start) < today ? " past" : "") + (g === nextGame ? " next" : "");
+    const top = document.createElement("div"); top.className = "top";
+    const when = document.createElement("span"); when.className = "when"; when.textContent = fmtWhen(g);
+    const who = document.createElement("span"); who.className = "who";
+    let name = SCHED_WORDS[g.vs] ? w(g.vs) : g.vs;
+    if (lang === "es") name = name.replace(/^(.*) Tournament$/, "Torneo $1").replace(/^(.*) Championships$/, "Campeonato $1");
+    who.textContent = name;
+    top.append(when, who);
+    if (g.dg) { const t = document.createElement("span"); t.className = "tag dg"; t.textContent = w("dg"); top.append(t); }
+    if (g === nextGame) { const t = document.createElement("span"); t.className = "tag nx"; t.textContent = w("next"); top.append(t); }
+    li.append(top);
+    const keys = Object.keys(TEAMS).filter(k => g.t[k] && (schedTeam === "all" || k === schedTeam));
+    if (keys.length) {
+      const times = document.createElement("div"); times.className = "times";
+      for (const k of keys) {
+        const c = document.createElement("span"); c.className = "time";
+        const b = document.createElement("b"); b.textContent = fmtTime(g.t[k]);
+        c.append(TEAMS[k][lang === "es" ? 1 : 0] + " · ", b); times.append(c);
+      }
+      li.append(times);
+    }
+    if (g.away || g.vs !== "AIAL Championships") {
+      const where = document.createElement("div"); where.className = "where";
+      if (g.away) {
+        where.append(w("away") + ": " + g.away + " · ");
+        const a = document.createElement("a"); a.textContent = w("map"); a.target = "_blank"; a.rel = "noopener";
+        a.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(g.away); where.append(a);
+      } else {
+        where.textContent = w("home") + (g.note ? " · " + w(g.note) : "");
+      }
+      li.append(where);
+    }
+    list.append(li);
+  }
+  if (!games.length) { const li = document.createElement("li"); li.className = "game"; li.textContent = w("none"); list.append(li); }
+  document.getElementById("sched-note").textContent = w("noteTxt");
+}
+document.getElementById("sched-filter").addEventListener("click", e => {
+  const b = e.target.closest("button[data-team]");
+  if (b) { schedTeam = b.dataset.team; drawSchedule(); }
+});
+
 // ---------- English / Español ----------
 // Spanish text, keyed by a short code made from the English text it replaces.
 // If the English text changes, that piece shows in English until its Spanish is updated.
@@ -1910,14 +2013,16 @@ const ES = {
 "k7d0qz": "Me sé mi trabajo en el contraataque y en romper la presión.",
 "wvtd0w": "Le echo ganas en cada jugada. 🐉",
 "1r264h7": "Me sé mi lugar en las 3 defensas.",
-"14yw22": "Me sé mi trabajo en la presión 2-2-1."
+"14yw22": "Me sé mi trabajo en la presión 2-2-1.",
+"17lb0gl": "Calendario De La Temporada",
+"19hwlpo": "Calendario"
 };
 const LANG_KEY = "smb-lang";
 let lang = "en";
 const tidy = s => s.replace(/\s+/g, " ").trim();
 const code = s => { let h = 2166136261; for (const c of s) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); };
 const BLOCK_TAGS = new Set(["DIV","P","LI","UL","OL","H1","H2","H3","H4","TABLE","THEAD","TBODY","TR","TD","TH","SECTION","DETAILS","SUMMARY","DL","DT","DD","FIGURE","FIGCAPTION","svg","INPUT","LABEL","NAV","MAIN","HEADER","FOOTER","BUTTON"]);
-const isLeaf = e => e && e.tagName !== "LABEL" && !e.closest("svg,script,style,.lang-toggle")
+const isLeaf = e => e && e.tagName !== "LABEL" && !e.closest("svg,script,style,.lang-toggle,[data-i18n-skip]")
   && [...e.childNodes].some(n => n.nodeType === 3 && /[A-Za-z]/.test(n.textContent))
   && ![...e.querySelectorAll("*")].some(d => BLOCK_TAGS.has(d.tagName));
 const swaps = [];
@@ -1941,12 +2046,14 @@ function setLang(next, remember = true) {
   document.querySelectorAll(".lang-toggle button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
   document.querySelectorAll("figure.diagram").forEach(f => { const svg = f.querySelector("svg"), cap = f.querySelector("figcaption"); if (svg && cap) svg.setAttribute("aria-label", cap.textContent); });
   document.getElementById("copy-msg").textContent = "";
+  drawSchedule();
   if (remember) { try { localStorage.setItem(LANG_KEY, lang); } catch (e) {} }
 }
 document.addEventListener("click", e => {
   const b = e.target.closest(".lang-toggle button");
   if (b) setLang(b.dataset.lang);
 });
+drawSchedule();
 // ?lang=es in the link opens the page in Spanish; otherwise use the viewer's last choice, else English.
 let startLang = new URLSearchParams(location.search).get("lang");
 if (!startLang) { try { startLang = localStorage.getItem(LANG_KEY); } catch (e) {} }
