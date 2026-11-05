@@ -170,7 +170,11 @@ details.tip[open] summary::after { content: "–"; }
 .sandwich .filling { background: var(--orange-soft); }
 .sandwich .filling b { color: var(--orange); }
 /* Season schedule */
-.sched-anchor { scroll-margin-top: 70px; margin-top: 18px; }
+.sched-filter { padding-top: 16px; }
+.menu-btn .next-up:empty { display: none; }
+.menu-btn .next-up { color: var(--orange); font-weight: 700; margin-top: 4px; }
+.see-sched { background: var(--navy); color: var(--navy-ink); border: 0; border-radius: 999px; padding: 10px 18px; font-weight: 700; cursor: pointer; }
+.see-sched:hover { background: var(--orange); }
 .sched-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .sched-filter button { background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 15px; cursor: pointer; }
 .sched-filter button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--navy-ink); }
@@ -323,6 +327,10 @@ html { scroll-behavior: smooth; }
         <span><span class="label">Parent Announcements</span><div class="desc">Parent Night: conduct, game day, playing time and the tryout scorecard</div></span>
         <span class="arrow" aria-hidden="true">→</span>
       </button>
+      <button class="menu-btn" data-go="schedule">
+        <span><span class="label">Game Schedule</span><div class="desc">Every game, time and location, by team</div><div class="desc next-up" id="home-next" data-i18n-skip></div></span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </button>
       <button class="menu-btn" data-go="offense">
         <span><span class="label">Offensive Plays</span><div class="desc">Dragon offense, inbound plays, fast break and press break</div></span>
         <span class="arrow" aria-hidden="true">→</span>
@@ -355,7 +363,6 @@ html { scroll-behavior: smooth; }
       <a href="#students">Players</a>
       <a href="#fouls">Fouls</a>
       <a href="#parents">Parents</a>
-      <a href="#schedule">Schedule</a>
       <a href="#gameday">Game Day</a>
       <a href="#playing-time">Playing Time</a>
       <a href="#scorecard">Scorecard</a>
@@ -458,12 +465,7 @@ html { scroll-behavior: smooth; }
     <!-- Game day -->
     <section class="block" id="gameday">
       <h2>Game Day</h2>
-      <div id="schedule" class="sched-anchor">
-        <h3 class="sub-h">Season Schedule</h3>
-        <div class="sched-filter" role="group" aria-label="Show games for" id="sched-filter" data-i18n-skip></div>
-        <ol class="sched-list" id="sched-list" data-i18n-skip></ol>
-        <p class="sched-note" id="sched-note" data-i18n-skip></p>
-      </div>
+      <p class="lead"><button class="see-sched" data-go="schedule">See the full game schedule →</button></p>
       <div class="callout"><p><strong>Please bring snacks or feed your child before the game.</strong> Some games run late, and that's a long time for them to go without food.</p></div>
       <div class="facts">
         <div class="fact"><div class="num">30 min</div><div class="what">Arrive at least 30 minutes before tip-off</div></div>
@@ -529,6 +531,22 @@ html { scroll-behavior: smooth; }
     </section>
 
     <footer>St. Monica's Basketball · Parent Night</footer>
+  </div>
+</main>
+
+<!-- ================= SCHEDULE ================= -->
+<main id="view-schedule" hidden>
+  <div class="topbar"><div class="wrap"><button class="back" data-go="home">← Home</button><span class="name">Game Schedule</span><div class="lang-toggle" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button><button type="button" data-lang="es" aria-pressed="false" aria-label="Español">ES</button></div></div></div>
+  <div class="wrap">
+    <div class="page-head">
+      <div class="eyebrow">Dragons Basketball 2026–27</div>
+      <h1>Game Schedule</h1>
+      <p>Every game for all four teams. Tap your child's team to see only their games.</p>
+    </div>
+    <div class="sched-filter" role="group" aria-label="Show games for" id="sched-filter" data-i18n-skip></div>
+    <ol class="sched-list" id="sched-list" data-i18n-skip></ol>
+    <p class="sched-note" id="sched-note" data-i18n-skip></p>
+    <footer>St. Monica's Basketball · Game Schedule</footer>
   </div>
 </main>
 
@@ -1129,7 +1147,7 @@ for (const a of AREAS) {
 }
 
 // Simple page switching
-const VIEWS = ["home", "parents", "offense", "defense"];
+const VIEWS = ["home", "parents", "schedule", "offense", "defense"];
 function show(name, scroll = true) {
   if (!VIEWS.includes(name)) name = "home";
   for (const v of VIEWS) document.getElementById("view-" + v).hidden = v !== name;
@@ -1366,6 +1384,11 @@ function fmtTime(v) {
   if (v === "TBA: 2 teams of 4") return w("teamsOf4");
   return lang === "es" ? v.replace(" PM", " p.m.") : v;
 }
+function gameName(g) {
+  let name = SCHED_WORDS[g.vs] ? w(g.vs) : g.vs;
+  if (lang === "es") name = name.replace(/^(.*) Tournament$/, "Torneo $1").replace(/^(.*) Championships$/, "Campeonato $1");
+  return name;
+}
 function drawSchedule() {
   const list = document.getElementById("sched-list"), bar = document.getElementById("sched-filter");
   if (!list) return;
@@ -1385,9 +1408,7 @@ function drawSchedule() {
     const top = document.createElement("div"); top.className = "top";
     const when = document.createElement("span"); when.className = "when"; when.textContent = fmtWhen(g);
     const who = document.createElement("span"); who.className = "who";
-    let name = SCHED_WORDS[g.vs] ? w(g.vs) : g.vs;
-    if (lang === "es") name = name.replace(/^(.*) Tournament$/, "Torneo $1").replace(/^(.*) Championships$/, "Campeonato $1");
-    who.textContent = name;
+    who.textContent = gameName(g);
     top.append(when, who);
     if (g.dg) { const t = document.createElement("span"); t.className = "tag dg"; t.textContent = w("dg"); top.append(t); }
     if (g === nextGame) { const t = document.createElement("span"); t.className = "tag nx"; t.textContent = w("next"); top.append(t); }
@@ -1417,6 +1438,8 @@ function drawSchedule() {
   }
   if (!games.length) { const li = document.createElement("li"); li.className = "game"; li.textContent = w("none"); list.append(li); }
   document.getElementById("sched-note").textContent = w("noteTxt");
+  const up = SCHEDULE.find(g => dayOf(g.end || g.start) >= today), homeNext = document.getElementById("home-next");
+  if (homeNext) homeNext.textContent = up ? (lang === "es" ? "Siguiente: " : "Next up: ") + fmtWhen(up) + " · " + gameName(up) : "";
 }
 document.getElementById("sched-filter").addEventListener("click", e => {
   const b = e.target.closest("button[data-team]");
@@ -2014,6 +2037,12 @@ const ES = {
 "wvtd0w": "Le echo ganas en cada jugada. 🐉",
 "1r264h7": "Me sé mi lugar en las 3 defensas.",
 "14yw22": "Me sé mi trabajo en la presión 2-2-1.",
+"2fzz1o": "Calendario De Partidos",
+"jj5hmh": "Cada partido, horario y lugar, por equipo",
+"wgawia": "Básquetbol Dragons 2026–27",
+"e7uqym": "Todos los partidos de los cuatro equipos. Toca el equipo de tu hijo o hija para ver solo sus partidos.",
+"ewfpll": "Ver el calendario completo de partidos →",
+"kctx1k": "Básquetbol St. Monica's · Calendario De Partidos",
 "17lb0gl": "Calendario De La Temporada",
 "19hwlpo": "Calendario"
 };
